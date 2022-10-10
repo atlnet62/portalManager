@@ -17,4 +17,10 @@ Why developpe it on react and node ?
 
 
 
+### credits : 
+
+Icons : https://icons8.com/icon/102721/bookmark
+
+
+Proxy sur server back : http://localhost:9000
 
