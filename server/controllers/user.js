@@ -11,6 +11,7 @@ const saltRounds = 10;
 /**
  * Verified if user exist
  */
+
 const checkUser = async (request, response, next, searchValue, column, table, searchKey) => {
     const userDatas = {
         key: searchValue,
@@ -175,8 +176,7 @@ export const addUser = async (request, response, next) => {
                 password: hash,
             };
 
-            const query =
-                "INSERT INTO user (uuid, email, password, reset_password, alias, role_id, validation_account, register_date, avatar) VALUES ( ?, ?, ?, 1, NULL, 1, 0, now(), 'avatarDefault.png')";
+            const query = "INSERT INTO user (uuid, email, password, reset_password, alias, role_id, validation_account, register_date, avatar) VALUES ( ?, ?, ?, 1, NULL, 1, 0, now(), 'avatar.png')";
 
             try {
                 const result = await Model.saveData(query, dataUser);
@@ -201,8 +201,16 @@ export const addUser = async (request, response, next) => {
  */
 
 export const selectUser = async (request, response, next) => {
+    let uuid = null;
+
+    if (!request.params.userUUID) {
+        uuid = request.params.uuid;
+    } else {
+        uuid = request.params.userUUID;
+    }
+
     const userDatas = {
-        key: request.params.uuid,
+        key: uuid,
         query: "SELECT user.id AS user_id, uuid, email, reset_password, alias, validation_account, register_date, avatar, role.id AS role_id, role.title AS user_role FROM user JOIN role ON role_id = role.id WHERE uuid = ?",
     };
 
@@ -263,10 +271,9 @@ export const allUser = async (request, response, next) => {
 
 export const signin = async (request, response, next) => {
     const { email, password } = request.body;
-
     const userDatas = {
         key: email,
-        query: "SELECT email, password FROM user WHERE email = ?",
+        query: "SELECT * FROM user WHERE email = ?",
     };
 
     try {
@@ -279,7 +286,7 @@ export const signin = async (request, response, next) => {
             });
             return;
         }
-        const TOKEN = jwt.sign({ uuid: result[0].uuid, role_id: result[0].role_id }, TOKEN_SECRET);
+        const TOKEN = jwt.sign({ uuid: result[0].uuid }, TOKEN_SECRET);
 
         response.status(200).json({
             token: TOKEN,
@@ -296,7 +303,6 @@ export const signin = async (request, response, next) => {
 
 export const signup = async (request, response, next) => {
     const { email, password } = request.body;
-
     const checkUserDatas = await checkUser(request, response, next, email, "email", "user", "email");
 
     if (checkUserDatas) {
