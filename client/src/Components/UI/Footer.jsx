@@ -1,7 +1,8 @@
 function Footer() {
     return (
         <footer>
-            <p>2022@2lsoft.fr</p>
+            <p>tous droits réservés @2lsoft.fr</p>
+            <p>2007 - 2022</p>
         </footer>
     );
 }

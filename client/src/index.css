@@ -1,0 +1,185 @@
+/* INIT THE CSS */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* GLOBAL ELEMENT */
+
+html {
+    font-size: 62.5%;
+}
+
+body {
+    font-size: 1.6rem;
+    background-color: #f0ffff;
+    font-family: "Ubuntu", Verdana, sans-serif;
+    color: #202020;
+}
+
+/* HEADER */
+
+header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0;
+    background-color: #202020;
+}
+
+#vortex {
+    display: none;
+}
+
+header h1 {
+    text-align: right;
+    text-transform: uppercase;
+    color: #f0ffff;
+    padding: 1.5rem 0.5rem;
+    font-size: 2.5rem;
+}
+
+#menu-btn {
+    width: 5rem;
+    height: 5rem;
+    background-color: #f0ffff;
+    border: 1px solid #202020;
+    margin: 0.5rem;
+    font-size: 2.5rem;
+}
+
+.menu-off {
+    display: none;
+}
+
+.menu-display {
+    width: 100%;
+    background-color: #202020;
+    top: 6rem;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    position: fixed;
+    z-index: 100;
+}
+
+.menu-overlay {
+    background-color: #202020ee;
+    width: 100%;
+    height: 92vh;
+    display: block;
+    position: fixed;
+    z-index: 50;
+}
+
+nav a {
+    color: #f0ffff;
+    font-size: 2rem;
+    text-decoration: none;
+    text-transform: uppercase;
+    padding: 2rem;
+}
+
+nav a:hover {
+    background-color: #161616;
+}
+
+/* MAIN GLOBAL */
+
+h2 {
+    text-align: center;
+    margin: 2rem;
+}
+
+main {
+    margin: 1rem;
+    padding: 5rem 0 10rem 0;
+    text-align: justify;
+}
+
+p {
+    margin: 1rem;
+}
+
+/* MAIN SPEC ELEMENT  */
+
+#form-entry {
+    text-align: center;
+}
+
+#form-entry img {
+    width: 40%;
+    text-transform: uppercase;
+}
+
+fieldset input {
+    width: 100%;
+    padding: 0.5rem;
+    margin: 0.5rem 0;
+}
+
+fieldset legend {
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+fieldset {
+    width: 60%;
+    margin: auto;
+    padding: 1rem;
+}
+
+#user-list {
+    width: 80%;
+    margin: auto;
+}
+
+/* FOOTER */
+
+footer {
+    width: 100%;
+    padding: 1rem 0;
+    color: #f0ffff;
+    background-color: #202020;
+    text-align: center;
+    bottom: 0;
+}
+
+@media screen and (min-width: 768px) {
+
+    header h1 {
+        padding: 1rem 0.5rem;
+    }
+
+    #menu-btn {
+        font-weight: bold;
+        width: 12rem;
+        height: 4rem;
+    }
+
+    .menu-display {
+        top: 5rem;
+        width: 25%;
+    }
+}
+
+@media screen and (min-width: 1280px) {
+
+    header h1 {
+        width: 100%;
+        text-align: center;
+    }
+
+    .menu-overlay {
+        display: none;
+    }
+
+    .menu-display {
+        top: 4rem;
+        flex-direction: row;
+        justify-content: space-evenly;
+        width: 100%;
+    }
+}
