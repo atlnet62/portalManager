@@ -1,0 +1,13 @@
+.btn {
+    background-color: #0084ff;
+    border: 0.1rem solid #0084ff;
+    color: #f0ffff;
+    border-radius: 5rem;
+    padding: 0.5rem 1rem;
+    margin: 2rem 1rem;
+}
+
+.btn a {
+    text-decoration: none;
+    color: #002421;
+}

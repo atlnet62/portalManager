@@ -46,6 +46,36 @@ export const selectUser = async (token, uuid) => {
     }
 };
 
+export const updateUser = async (token, uuid, datas) => {
+    try {
+        return await axios.patch(`/api/v1/user/update/${uuid}`, datas, {
+            headers: { "x-access-token": token },
+        });
+    } catch (error) {
+        return error.response;
+    }
+};
+
+export const addUser = async (token, datas) => {
+    try {
+        return await axios.post("/api/v1/user/add", datas, {
+            headers: { "x-access-token": token },
+        });
+    } catch (error) {
+        return error.response;
+    }
+}
+
+export const removeUser = async (token, uuid) => {
+    try {
+        return await axios.delete(`/api/v1/user/remove/${uuid}`, {
+            headers: { "x-access-token": token },
+        });
+    } catch (error) {
+        return error.response;
+    }
+}
+
 // export const validateAccount = async (datas) => {
 //     try {
 //         return await axios.patch(`/api/v1/user/validateAccount/${datas.uuid}`, {datas});

@@ -10,6 +10,7 @@ import Profile from "../Components/Pages/User/Profile";
 
 import Admin from "../Components/Pages/Admin/Index";
 import UserTable from "../Components/Pages/Admin/User/Index";
+import Addform from "../Components/Pages/Admin/User/Form";
 
 import HOC from "../helpers/HOC";
 import Detail from "../Components/Pages/Admin/User/Detail";
@@ -31,6 +32,7 @@ function Router() {
             </Route>
 
             <Route path="admin" element={<HOC child={Admin} isAuthRequired={true} />}>
+                <Route path="user/add" element={<HOC child={Addform} isAuthRequired={true} />} />
                 <Route path="user/all" element={<HOC child={UserTable} isAuthRequired={true} />} />
                 <Route path="user/detail/:uuid" element={<HOC child={Detail} isAuthRequired={true} />} />
             </Route>

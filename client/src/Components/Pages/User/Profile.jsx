@@ -55,9 +55,9 @@ function Profile({ userInfos }) {
 
                     <tr>
                         <td>Password</td>
-                        {userInfos.reset_password !== 0 ? <td>Must be changed !</td> : <td>***</td>}
+                        {userInfos.reset_password !== 0 ? <td>Must be changed !</td> : <td>OK</td>}
                         <td>
-                            <button>Change</button>
+                            <button>Reset Password</button>
                         </td>
                     </tr>
                 </tbody>

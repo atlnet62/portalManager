@@ -1,23 +1,65 @@
 import { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
-import { selectUser } from "../../../../services/API/user";
+import { selectUser, updateUser } from "../../../../services/API/user";
+import { allRole } from "../../../../services/API/role";
 import Loading from "../../../UI/Elements/Loading";
+import Button from "./.././../../UI/Elements/Button/Index";
 
 function Detail() {
+    //const TOKEN = localStorage.getItem("uat");
     const { uuid } = useParams();
-    const [user, setUser] = useState({ user_id: 0, uuid: "", email: "", reset_password: 0, alias: null, validation_account: 0, register_date: "", avatar: "default.png", role_id: 0, user_role: 0 });
+
+    const [roles, setRoles] = useState([]);
+
+    const [infoUser, setInfoUser] = useState({});
+
+    const onChangeHandler = async (e) => {
+        setInfoUser({ ...infoUser, role_id: parseInt(e) });
+    };
+
+    // autosave des changement de parametres
+    const setNewUser = async () => {
+        try {
+            if (infoUser.email) {
+                console.log(infoUser);
+                const newInfo = {
+                    email: infoUser.email,
+                    reset_password: infoUser.reset_password,
+                    alias: infoUser.alias,
+                    validation_account: infoUser.validation_account,
+                    avatar: infoUser.avatar,
+                    role_id: infoUser.role_id,
+                };
+                await updateUser(localStorage.getItem("uat"), uuid, newInfo);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     useEffect(() => {
-        const TOKEN = localStorage.getItem("uat");
         const getUser = async () => {
-            const user = await selectUser(TOKEN, uuid);
-            setUser(user.data.userDatas);
+            try {
+                const infoUser = await selectUser(localStorage.getItem("uat"), uuid);
+                setInfoUser(infoUser.data.userDatas);
+            } catch (error) {
+                console.log(error);
+            }
         };
+
+        const getRoles = async () => {
+            const roles = await allRole(localStorage.getItem("uat"));
+            setRoles(roles.data.role_datas);
+        };
+
+        getRoles();
         getUser();
         // eslint-disable-next-line
     }, []);
 
-    return user.length < 0 ? (
+    setNewUser();
+
+    return infoUser.length < 0 ? (
         <Loading />
     ) : (
         <main id="user-detail">
@@ -33,60 +75,88 @@ function Detail() {
                     <tr>
                         <td>Avatar :</td>
                         <td>
-                            <img src={user.avatar !== "default.png" ? `/datas/${user.uuid}/${user.avatar}` : `/datas/default/${user.avatar}`} alt="this is the avatar" />
+                            <img src={infoUser.avatar !== "default.png" ? `/datas/${infoUser.uuid}/${infoUser.avatar}` : `/datas/default/${infoUser.avatar}`} alt="this is the avatar" />
                         </td>
                         <td>
-                            <button>Change</button>
+                            <Button
+                                onClickHandler={() => {
+                                    console.log("Click change avatar");
+                                }}>
+                                Change avatar
+                            </Button>
                         </td>
                     </tr>
 
                     <tr>
                         <td>Alias :</td>
-                        <td>{user.alias ? user.alias : null}</td>
+                        <td>{infoUser.alias ? infoUser.alias : null}</td>
                         <td>
-                            <button>Change</button>
+                            <Button
+                                onClickHandler={() => {
+                                    console.log("Change alias");
+                                }}>
+                                Change alias
+                            </Button>
                         </td>
                     </tr>
 
                     <tr>
                         <td>Account Validated :</td>
-                        <td>{user.validation_account && user.validation_account === 1 ? "Yes" : "No"}</td>
+                        <td>{infoUser.validation_account && infoUser.validation_account === 1 ? "Yes" : "No"}</td>
                     </tr>
 
                     <tr>
                         <td>Registered date :</td>
-                        <td>{user.register_date ? user.register_date : null}</td>
+                        <td>{infoUser.register_date ? infoUser.register_date : null}</td>
                     </tr>
 
                     <tr>
                         <td>E-mail</td>
-                        <td>{user.email}</td>
+                        <td>{infoUser.email}</td>
                         <td>
-                            <button>Change</button>
+                            <Button
+                                onClickHandler={() => {
+                                    console.log("Change Email");
+                                }}>
+                                Change e-mail
+                            </Button>
                         </td>
                     </tr>
 
                     <tr>
                         <td>Account type</td>
-                        <td>{user.user_role}</td>
                         <td>
-                            <button>Change</button>
+                            <select id="user_role_id" value={infoUser.role_id} onChange={(e) => onChangeHandler(e.target.value)}>
+                                {roles.map((role) => {
+                                    return (
+                                        <option key={role.roleID} value={role.roleID}>
+                                            {role.title}
+                                        </option>
+                                    );
+                                })}
+                            </select>
                         </td>
                     </tr>
 
                     <tr>
                         <td>Password</td>
-                        {user.reset_password !== 0 ? <td>Must be changed !</td> : <td>***</td>}
+                        {infoUser.reset_password !== 0 ? <td>Must be changed !</td> : <td>OK</td>}
                         <td>
-                            <button>Change</button>
+                            <Button
+                                onClickHandler={() => {
+                                    console.log("Click reset");
+                                }}>
+                                Reset Password
+                            </Button>
                         </td>
                     </tr>
                     <tr>
                         <td>UUID</td>
-                        <td>{user.uuid}</td>
+                        <td>{infoUser.uuid}</td>
                     </tr>
                 </tbody>
             </table>
+            <div className="divider"></div>
             <Link to="../user/all">Previous</Link>
         </main>
     );
