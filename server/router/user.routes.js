@@ -32,12 +32,12 @@ router.patch("/reset-password/:uuid", auth, resetPassword);
  * Delete a profil
  */
 
-router.delete("/remove/:uuid", auth, removeUser);
+router.delete("/remove/:userUUID", auth, removeUser);
 
 /**
  * Modification a data on profil
  */
 
-router.patch("/update/:uuid", auth, updateUser);
+router.patch("/update/:userUUID", auth, updateUser);
 
 export default router;

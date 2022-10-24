@@ -6,6 +6,8 @@ import {
     updateRole,
 } from "../controllers/role.js";
 
+import { auth } from "../middlewares/auth.js";
+
 const router = express.Router();
 /**
  * Create or login routes
@@ -14,7 +16,7 @@ const router = express.Router();
 router.post("/add", addRole);
 router.delete("/remove/:roleID", removeRole);
 
-router.get("/all", allRole);
+router.get("/all", auth, allRole);
 
 router.patch("/update/:roleID", updateRole);
 

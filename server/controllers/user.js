@@ -32,8 +32,7 @@ const checkUser = async (request, response, next, searchValue, column, table, se
 
 export const updateUser = async (request, response, next) => {
     const { email, reset_password, alias, validation_account, avatar, role_id } = request.body;
-
-    const uuid = request.params.uuid;
+    const uuid = request.params.userUUID;
     const table = "user";
     const column = "email";
     const searchKey = "uuid";
@@ -76,7 +75,7 @@ export const updateUser = async (request, response, next) => {
  */
 
 export const removeUser = async (request, response, next) => {
-    const uuid = request.params.uuid;
+    const uuid = request.params.userUUID;
     const table = "user";
     const column = "email";
     const searchKey = "uuid";
@@ -176,12 +175,10 @@ export const addUser = async (request, response, next) => {
                 password: hash,
             };
 
-            const query = "INSERT INTO user (uuid, email, password, reset_password, alias, role_id, validation_account, register_date, avatar) VALUES ( ?, ?, ?, 1, NULL, 1, 0, now(), 'avatar.png')";
+            const query = "INSERT INTO user (uuid, email, password, reset_password, alias, role_id, validation_account, register_date, avatar) VALUES ( ?, ?, ?, 1, NULL, 1, 0, now(), 'default.png')";
 
             try {
-                const result = await Model.saveData(query, dataUser);
-
-                //mailing(email, "Account Validation", "Welcome on board", "Please, Could you click on the button bellow : ", dataUser.uuid);
+                await Model.saveData(query, dataUser);
 
                 response.status(200).json({
                     tempPassword: password, // envoie un mail avec le password
