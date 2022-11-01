@@ -1,7 +1,8 @@
 
 export const errorHandler = (error, request, response, next) => {
 
-    console.log(error);
+    //console.log(error);
+    
     if (!error.errno) {
         response.status(error.code).json({ 
             errorCode: error.code,

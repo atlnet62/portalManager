@@ -21,16 +21,6 @@ export const addCategory = async (request, response, next) => {
     const uuid = request.params.uuid;
     const { title } = request.body;
 
-    // const checkDatas = await checkCategory(request, response, next, "title", "category", "title", title);
-
-    // if (checkDatas) {
-    //     const error = {
-    //         code: 404,
-    //         message: "Category is already existing !",
-    //     };
-    //     return next(error);
-    // }
-
     const categoryDatas = {
         title: title,
         uuid: uuid,
@@ -42,7 +32,7 @@ export const addCategory = async (request, response, next) => {
         const result = await Model.saveData(query, categoryDatas);
 
         response.status(200).json({
-            category_id: result.insertId, // envoie un mail avec le password
+            category_id: result.insertId,
             isCreated: true,
         });
     } catch (error) {

@@ -26,7 +26,7 @@ router.get("/:userUUID", auth, selectUser);
  * Modification password
  */
 
-router.patch("/reset-password/:uuid", auth, resetPassword);
+router.patch("/reset-password/:userUUID", auth, resetPassword);
 
 /**
  * Delete a profil

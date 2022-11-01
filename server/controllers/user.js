@@ -31,6 +31,7 @@ const checkUser = async (request, response, next, searchValue, column, table, se
  */
 
 export const updateUser = async (request, response, next) => {
+
     const { email, reset_password, alias, validation_account, avatar, role_id } = request.body;
     const uuid = request.params.userUUID;
     const table = "user";
@@ -111,8 +112,9 @@ export const removeUser = async (request, response, next) => {
  */
 
 export const resetPassword = async (request, response, next) => {
-    const { password, reset } = request.body;
-    const uuid = request.params.uuid;
+
+    const uuid = request.params.userUUID;
+    const { password } = request.body;
 
     const checkUserDatas = await checkUser(request, response, next, uuid, "email", "user", "uuid");
 
@@ -128,10 +130,10 @@ export const resetPassword = async (request, response, next) => {
         bcrypt.hash(password, saltRounds, async (error, hash) => {
             const dataUser = {
                 password: hash,
-                resetPassword: reset,
+                reset: 0,
                 uuid: uuid,
             };
-            const query = "UPDATE user SET password = ?, reset_password = ? WHERE uuid = ?";
+            const query = "UPDATE user SET password = ?, password_date = now(), reset_password = ? WHERE uuid = ?";
 
             try {
                 await Model.saveData(query, dataUser);
@@ -175,7 +177,7 @@ export const addUser = async (request, response, next) => {
                 password: hash,
             };
 
-            const query = "INSERT INTO user (uuid, email, password, reset_password, alias, role_id, validation_account, register_date, avatar) VALUES ( ?, ?, ?, 1, NULL, 1, 0, now(), 'default.png')";
+            const query = "INSERT INTO user (uuid, email, password, reset_password, alias, role_id, validation_account, register_date, avatar) VALUES ( ?, ?, ?, 1, NULL, 1, 1, now(), '08.png')";
 
             try {
                 await Model.saveData(query, dataUser);

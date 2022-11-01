@@ -6,6 +6,7 @@ export const auth = (request, response, next) => {
 
     const TOKEN = request.headers["x-access-token"];
     if (TOKEN === undefined || TOKEN === "null") {
+        
         response.status(404).json({ msg: "Token not found !" });
         return;
     } else {
