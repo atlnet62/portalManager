@@ -76,6 +76,16 @@ export const removeUser = async (token, uuid) => {
     }
 }
 
+export const resetPasswordUser = async (token, uuid, datas) => {
+    try {
+        return await axios.patch(`/api/v1/user/reset-password/${uuid}`, datas, {
+            headers: { "x-access-token": token },
+        });
+    } catch (error) {
+        return error.response;
+    }
+}
+
 // export const validateAccount = async (datas) => {
 //     try {
 //         return await axios.patch(`/api/v1/user/validateAccount/${datas.uuid}`, {datas});

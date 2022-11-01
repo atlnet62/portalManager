@@ -1,4 +1,4 @@
-import Form from "./Signform";
+import Form from "./SignForm";
 
 function Signup() {
     return <Form formType={"signup"} />;

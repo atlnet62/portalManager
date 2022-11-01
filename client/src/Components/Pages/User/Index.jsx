@@ -1,5 +1,5 @@
-import { Outlet , useLocation } from "react-router-dom";
-import Signform from "./Signform";
+import { Outlet, useLocation } from "react-router-dom";
+import Signform from "./SignForm";
 
 function Entry() {
     const location = useLocation;

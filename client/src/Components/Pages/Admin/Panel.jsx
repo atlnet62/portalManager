@@ -3,13 +3,13 @@ import { Link } from "react-router-dom";
 
 import Error from "../../Pages/Error";
 
-function Panel({ userInfos }) {
+function Panel({ myProfile }) {
     
     const [isAdmin, setIsAdmin] = useState(false);
 
     useEffect(() => {
         const checkAdmin = () => {
-            if (userInfos.role_id === 3) {
+            if (myProfile.role_id === 3) {
                 setIsAdmin(true);
             }
         };

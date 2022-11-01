@@ -7,9 +7,9 @@ import { Link } from "react-router-dom";
 
 function Signform({ formType }) {
     const navigate = useNavigate();
-    const [inputs, setInputs] = useState({ email: "", password: "" });
     const email = useRef();
 
+    const [inputs, setInputs] = useState({ email: "", password: "" });
     const [msg, setMsg] = useState(null);
 
     const onSubmitHandler = (e) => {
@@ -31,6 +31,7 @@ function Signform({ formType }) {
         }
         // refecto en tablea en fin de projet
         localStorage.setItem("uat", response.data.token);
+        
         navigate("/portal");
     };
 

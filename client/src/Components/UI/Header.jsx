@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars, faLock, faLockOpen, faUser, faXmark, faHouseChimney, faDashboard } from "@fortawesome/free-solid-svg-icons";
+import { faLock, faLockOpen, faUser, faHouseChimney, faDashboard, faChalkboard } from "@fortawesome/free-solid-svg-icons";
 
 function Header() {
-    const { isLogged, userInfos } = useSelector((state) => ({ ...state.user }));
+    const { isLogged, myProfile } = useSelector((state) => ({ ...state.user }));
 
     const [isActive, setIsActive] = useState(false);
     const [overlay, setOverlay] = useState(false);
@@ -30,14 +30,20 @@ function Header() {
     return (
         <>
             <header>
-                {widthScreen < 1280 && (
-                    <button id="menu-btn" onClick={handleClick}>
-                        {<FontAwesomeIcon icon={isActive ? faXmark : faBars} />}
-                        {widthScreen > 768 && " MENU"}{" "}
-                    </button>
+                {widthScreen < 3840 && (
+                    <abbr title="Menu">
+                        <button id="menu-btn" onClick={handleClick}>
+                            {/* Bouton classique en menu burger */}
+                            {/* {<FontAwesomeIcon icon={isActive ? faXmark : faBars} />}
+                            {widthScreen > 768 && " MENU"}{" "} */}
+
+                            {/* Menu version new génération avec avatar */}
+                            {myProfile !== null ? <img src={`/datas/avatars/${myProfile.avatar}`} alt="this is the avatar" /> : <img src={`/datas/avatars/13.png`} alt="this is the avatar" />}
+                        </button>
+                    </abbr>
                 )}
                 <h1>PORTAL MANAGER</h1>
-                <nav className={`${widthScreen < 1280 ? (isActive ? "menu-display" : "menu-off") : "menu-display"}`} onClick={handleClick}>
+                <nav className={`${widthScreen < 3840 ? (isActive ? "menu-display" : "menu-off") : "menu-display"}`} onClick={handleClick}>
                     <Link to="/home">
                         <FontAwesomeIcon icon={faHouseChimney} />
                         Home
@@ -50,18 +56,18 @@ function Header() {
                         </Link>
                     ) : (
                         <>
-                            <Link to="/portal">Portal</Link>
+                            <Link to="/portal"><FontAwesomeIcon icon={faChalkboard} />Portal</Link>
                             <Link to="/user/profile">
                                 <FontAwesomeIcon icon={faUser} />
                                 Profile
                             </Link>
 
-                            {userInfos?.role_id === 3 ? (
+                            {myProfile?.role_id === 3 ? (
                                 <Link to="/admin">
                                     <FontAwesomeIcon icon={faDashboard} />
                                     Admin
                                 </Link>
-                            ) : userInfos?.role_id === 2 ? (
+                            ) : myProfile?.role_id === 2 ? (
                                 <Link to="/moderator">Moderator</Link>
                             ) : null}
                             <Link to="/user/signout">

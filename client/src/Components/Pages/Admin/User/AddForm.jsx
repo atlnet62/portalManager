@@ -5,17 +5,20 @@ import { addUser } from "../../../../services/API/user";
 function Addform() {
     const TOKEN = localStorage.getItem("uat");
 
-    const [inputs, setInputs] = useState({email:"", password:""});
+    const [inputs, setInputs] = useState({email:""});
     const email = useRef();
 
-    const [message, setMessage] = useState(null)
+    const [message, setMessage] = useState(null);
 
     const onSubmitHandler = async (e) => {
         e.preventDefault();
         try {
             const response = await addUser(TOKEN, inputs);
+            if(response.status) {
+                setMessage(response.data.errorMessage);
+            }
             if(response.status === 200) {
-                setMessage(response.data.tempPassword);
+                setMessage(`Temporary Password :${response.data.tempPassword}`);
             }
         } catch (error) {
             console.log(error);
@@ -37,7 +40,7 @@ function Addform() {
                     onChange={(e) => setInputs({...inputs, email: e.target.value})}
                 />
                 <input type="submit" value="Send" />
-                {message && <p>Temporary Password : {message}</p>}
+                {message && <p>{message}</p>}
             </form>
             <div className="divider"></div>
             <Link to="../user/all">Previous</Link>

@@ -1,0 +1,28 @@
+.Card {
+    margin: 2rem;
+    background-color: #202020;
+    border: 1px solid #202020;
+    width: 15rem;
+    text-align: center;
+    box-shadow: 0 0 5px #202020;
+    transform: scale(0.9);
+}
+
+.Card img {
+    width: 100%;
+    height: auto;
+}
+
+.Card h3 {
+    color: #f0ffff;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.Card a {
+    text-decoration: none;
+}
+
+.Card:hover {
+    transform: scale(1);
+}

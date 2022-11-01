@@ -1,8 +1,50 @@
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { updateUser } from "../../../services/API/user";
 import Error from "../Error";
-function Profile({ userInfos }) {
-    //console.log(userInfos)
 
-    return userInfos === null ? (
+
+function Profile({ myProfile }) {
+
+    // générer le numero de l'avatar
+    let pictures = [];
+    for (let i = 1; i < 45; i++) {
+        let pict = null;
+        if (i < 10) {
+            pict = `0${i}.png`;
+        } else {
+            pict =  `${i}.png`;
+        }
+        pictures.push(pict);
+    }
+    const [myInfos, setMyInfos] = useState({
+        email: myProfile.email,
+        reset_password: myProfile.reset_password,
+        alias: myProfile.alias,
+        validation_account: myProfile.validation_account,
+        avatar: myProfile.avatar,
+        role_id: myProfile.role_id,
+    });
+    
+    const onChangeHandler = (e) => {
+        setMyInfos({ ...myInfos, avatar: e });
+    };
+
+    // autosave des changement de parametres
+    const setUpdateUser = async () => {
+        try {
+            if (myInfos.email) {
+                const newInfos = {...myInfos};
+                await updateUser(localStorage.getItem("uat"), myProfile.uuid, newInfos);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+    
+    setUpdateUser();
+
+    return myProfile === null ? (
         <Error />
     ) : (
         <main id="profile">
@@ -18,46 +60,52 @@ function Profile({ userInfos }) {
                     <tr>
                         <td>Avatar :</td>
                         <td>
-                            <img src={userInfos.avatar !== "default.png" ? `/datas/${userInfos.uuid}/${userInfos.avatar}` : `/datas/default/${userInfos.avatar}`} alt="this is the avatar" />
+                            <img src={`/datas/avatars/${myInfos.avatar}`} alt="this is the avatar" />
                         </td>
                         <td>
-                            <button>Change</button>
+                            <select id="user_avatar" value={myInfos.avatar} onChange={(e) => onChangeHandler(e.target.value)}>
+                                {pictures.map((picture) => {
+                                    return (
+                                        <option key={picture}>{picture}</option>
+                                    );
+                                })}
+                            </select>
                         </td>
                     </tr>
 
                     <tr>
                         <td>Alias :</td>
-                        <td>{userInfos.alias ? userInfos.alias : null}</td>
+                        <td>{myProfile.alias ? myProfile.alias : null}</td>
                         <td>
-                            <button>Change</button>
+                            <Link to="change_alias">Change alias</Link>
                         </td>
                     </tr>
 
                     <tr>
                         <td>Account Validated :</td>
-                        <td>{userInfos.validation_account && userInfos.validation_account === 1 ? "Yes" : "No"}</td>
+                        <td>{myProfile.validation_account && myProfile.validation_account === 1 ? "Yes" : "No"}</td>
                     </tr>
 
                     <tr>
                         <td>Registered date :</td>
-                        <td>{userInfos.register_date ? userInfos.register_date : null}</td>
+                        <td>{myProfile.register_date ? myProfile.register_date : null}</td>
                     </tr>
 
                     <tr>
                         <td>E-mail</td>
-                        <td>{userInfos.email}</td>
+                        <td>{myProfile.email}</td>
                     </tr>
 
                     <tr>
                         <td>Account type</td>
-                        <td>{userInfos.user_role}</td>
+                        <td>{myProfile.user_role}</td>
                     </tr>
 
                     <tr>
                         <td>Password</td>
-                        {userInfos.reset_password !== 0 ? <td>Must be changed !</td> : <td>OK</td>}
+                        {myProfile.reset_password !== 0 ? <td>Must be changed !</td> : <td>OK</td>}
                         <td>
-                            <button>Reset Password</button>
+                            <Link to="reset_password">Reset password</Link>
                         </td>
                     </tr>
                 </tbody>

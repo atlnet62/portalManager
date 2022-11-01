@@ -16,6 +16,7 @@ body {
     background-color: #f0ffff;
     font-family: "Ubuntu", Verdana, sans-serif;
     color: #202020;
+    /* background: url("./assets/images/bcg.jpg") no-repeat; */
 }
 
 /* HEADER */
@@ -26,7 +27,7 @@ header {
     justify-content: space-between;
     width: 100%;
     padding: 0;
-    background-color: #202020;
+    background-color: #20202075;
 }
 
 #vortex {
@@ -44,10 +45,15 @@ header h1 {
 #menu-btn {
     width: 5rem;
     height: 5rem;
-    background-color: #f0ffff;
-    border: 1px solid #202020;
+    background-color: #f0ffff00;
+    border: 1px solid #20202000;
+    border-radius: 25px;
     margin: 0.5rem;
     font-size: 2.5rem;
+}
+
+#menu-btn img {
+    width: 5rem;
 }
 
 .menu-off {
@@ -72,6 +78,10 @@ header h1 {
     display: block;
     position: fixed;
     z-index: 50;
+}
+
+nav svg {
+    padding: 0 1rem 0;
 }
 
 nav a {
@@ -136,13 +146,17 @@ fieldset {
     margin: auto;
 }
 
+.divider {
+    margin: 5rem auto;
+}
+
 /* FOOTER */
 
 footer {
     width: 100%;
     padding: 1rem 0;
     color: #f0ffff;
-    background-color: #202020;
+    background-color: #20202075;
     text-align: center;
     bottom: 0;
 }
@@ -153,33 +167,9 @@ footer {
         padding: 1rem 0.5rem;
     }
 
-    #menu-btn {
-        font-weight: bold;
-        width: 12rem;
-        height: 4rem;
-    }
 
     .menu-display {
         top: 5rem;
         width: 25%;
-    }
-}
-
-@media screen and (min-width: 1280px) {
-
-    header h1 {
-        width: 100%;
-        text-align: center;
-    }
-
-    .menu-overlay {
-        display: none;
-    }
-
-    .menu-display {
-        top: 4rem;
-        flex-direction: row;
-        justify-content: space-evenly;
-        width: 100%;
     }
 }
