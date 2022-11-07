@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import Error from "../Components/Pages/Error";
-import Loading from "../Components/UI/Elements/Loading";
 
 import { checkToken } from "../services/API/user.js";
 import { getBookmarks } from "../services/API/bookmark.js";
@@ -13,40 +12,39 @@ import { loadBookmarks } from "../store/slices/bookmark.slice";
 
 function HOC({ child, isAuthRequired }) {
     const navigate = useNavigate();
-    
+
     const TOKEN = localStorage.getItem("uat");
 
     const Child = child;
     const [fetchError, setFetchError] = useState(false);
 
     const dispatch = useDispatch();
-    const { myProfile, myBookmarks, isLogged  } = useSelector((state) => ({
+    const { myProfile, myBookmarks, isLogged } = useSelector((state) => ({
         ...state.user,
-        ...state.myBookmarks
+        ...state.myBookmarks,
     }));
 
     useEffect(() => {
         async function checkAuth() {
-
             if (isAuthRequired && !TOKEN) {
                 // verifier si existe un cookie
                 // si oui insere dans le cookie
                 // sinon sortir
-                console.log("bloc auth requis sans token")
+                console.log("bloc auth requis sans token");
                 dispatch(signout());
                 navigate("/home");
             }
 
             if (!isLogged) {
-                console.log("bloc non logged")
+                console.log("bloc non logged");
                 if (isAuthRequired) navigate("/user");
                 if (TOKEN !== null) {
                     const response = await checkToken(TOKEN);
                     if (response.status === 200) {
                         dispatch(signin(response.data.userDatas));
-                        console.log("relogged")
+                        console.log("relogged");
                         // identify  : redirect to portal
-                        navigate("/portal");
+                        navigate("/main");
                     }
                 }
             }
@@ -74,15 +72,7 @@ function HOC({ child, isAuthRequired }) {
         return <Error />;
     }
 
-    return (
-        <>
-            {
-                !myBookmarks.length 
-                ? <Loading />
-                : <Child myBookmarks={myBookmarks} myProfile={myProfile} />
-            }
-        </>
-    );
+    return <>{<Child myBookmarks={myBookmarks} myProfile={myProfile} />}</>;
 }
 
 export default HOC;

@@ -1,16 +1,16 @@
 import { Outlet, useLocation } from "react-router-dom";
 import HOC from "../../../helpers/HOC";
-import Portal from "./Portal";
+import MainPanel from "./Panel";
 
-function Bookmark() {
+function Main() {
     const location = useLocation;
-    return location().pathname !== "/portal" ? (
+    return location().pathname !== "/main" ? (
         <Outlet />
     ) : (
         <>
-            <HOC child={Portal} />
+            <HOC child={MainPanel} />
         </>
     );
 }
 
-export default Bookmark;
+export default Main;

@@ -1,14 +1,16 @@
-import React, { Fragment, useEffect, useState } from "react";
-import Loading from "../../../../Components/UI/Elements/Loading";
+import { Fragment, useEffect, useState } from "react";
+import Loading from "../../../UI/Elements/Loading";
 import { allUser, removeUser } from "../../../../services/API/user";
 import { Link } from "react-router-dom";
 import Button from "../../../UI/Elements/Button/Index";
 
-function UserTable() {
+function UserList() {
     const TOKEN = localStorage.getItem("uat");
     const [users, setUsers] = useState([]);
     const [message, setMessage] = useState(null);
     const [nbUsers, setNbUsers] = useState(0);
+
+    let count = -1;
 
     const clickRemove = async (e, uuid) => {
         e.preventDefault();
@@ -18,9 +20,10 @@ function UserTable() {
             if (response.data.isRemoved) {
                 setMessage("User Deleted !");
             }
-            const users = await allUser(TOKEN);
-            setUsers(users.data.usersDatas);
-            setNbUsers(users.data.nbUsers);
+            const indexUser = users.map((user) => user.uuid);
+            const newListUsers = users;
+            newListUsers.splice(indexUser.indexOf(uuid), 1);
+            setUsers(newListUsers);
         } catch (error) {
             console.log(error);
         }
@@ -63,10 +66,11 @@ function UserTable() {
                             <Loading />
                         ) : (
                             users.map((user) => {
+                                count++;
                                 return (
-                                    <Fragment key={user.user_id}>
+                                    <Fragment key={count}>
                                         <tr>
-                                            <td>{user.user_id}</td>
+                                            <td>{count}</td>
                                             <td>{user.email}</td>
                                             <td>{user.alias}</td>
                                             <td>{user.user_role}</td>
@@ -95,4 +99,4 @@ function UserTable() {
     );
 }
 
-export default UserTable;
+export default UserList;

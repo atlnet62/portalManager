@@ -30,9 +30,9 @@ export const removeBookmark = async (token, id) => {
     }
 }
 
-export const updateCounter = async (token, id, datas) => {
+export const updateCounter = async (token, id) => {
     try {
-        return await axios.patch(`/api/v1/bookmark/update-counter/${id}`, datas, {
+        return await axios.patch(`/api/v1/bookmark/update-counter/${id}`,id, {
             headers: { "x-access-token": token },
         });
     } catch (error) {

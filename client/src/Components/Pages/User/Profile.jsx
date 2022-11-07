@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { updateUser } from "../../../services/API/user";
 import Error from "../Error";
+import Button from "../../UI/Elements/Button/Index";
 
 
 function Profile({ myProfile }) {
@@ -25,6 +26,8 @@ function Profile({ myProfile }) {
         avatar: myProfile.avatar,
         role_id: myProfile.role_id,
     });
+
+    const [message, setMessage] = useState(null);
     
     const onChangeHandler = (e) => {
         setMyInfos({ ...myInfos, avatar: e });
@@ -36,13 +39,13 @@ function Profile({ myProfile }) {
             if (myInfos.email) {
                 const newInfos = {...myInfos};
                 await updateUser(localStorage.getItem("uat"), myProfile.uuid, newInfos);
+                setMessage("Profile updated ! Could you please disconnect and reconnect to updated your infos. Thanks.");
+
             }
         } catch (error) {
             console.log(error);
         }
     };
-    
-    setUpdateUser();
 
     return myProfile === null ? (
         <Error />
@@ -70,6 +73,7 @@ function Profile({ myProfile }) {
                                     );
                                 })}
                             </select>
+                            <Button onClickHandler={() => setUpdateUser()} isDisabled={myInfos.avatar === myProfile.avatar ? true : false}>Save</Button>
                         </td>
                     </tr>
 
@@ -109,6 +113,13 @@ function Profile({ myProfile }) {
                         </td>
                     </tr>
                 </tbody>
+                <tfoot>
+                    <tr>
+                        <td colSpan="3">
+                            {message && <p>{message}</p>}
+                        </td>
+                    </tr>
+                </tfoot>
             </table>
         </main>
     );

@@ -13,10 +13,14 @@ html {
 
 body {
     font-size: 1.6rem;
-    background-color: #f0ffff;
-    font-family: "Ubuntu", Verdana, sans-serif;
     color: #202020;
-    /* background: url("./assets/images/bcg.jpg") no-repeat; */
+    background-color: #a8fdfd;
+    font-family: "Ubuntu", Verdana, sans-serif;
+    /* background: url("./assets/images/bcg.webp") no-repeat; */
+}
+
+a {
+    color: white;
 }
 
 /* HEADER */
@@ -27,7 +31,7 @@ header {
     justify-content: space-between;
     width: 100%;
     padding: 0;
-    background-color: #20202075;
+    background-color: #20202025;
 }
 
 #vortex {
@@ -74,7 +78,7 @@ header h1 {
 .menu-overlay {
     background-color: #202020ee;
     width: 100%;
-    height: 92vh;
+    height: 100vh;
     display: block;
     position: fixed;
     z-index: 50;
@@ -103,14 +107,37 @@ h2 {
     margin: 2rem;
 }
 
-main {
-    margin: 1rem;
-    padding: 5rem 0 10rem 0;
-    text-align: justify;
-}
-
 p {
     margin: 1rem;
+}
+
+.btn-manager {
+    margin: 2rem auto;
+}
+
+.btn {
+    padding: 0.5rem 2rem;
+    margin: 0 0.5rem;
+    background-color: #20202075;
+    border-radius: 0.5rem;
+    box-shadow: #202020;
+    color: #f0ffff;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.btn-del {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 1rem;
+    z-index: 200;
+    position: fixed;
+    top: -1rem;
+    right: -1rem;
+    background-color: #dc143c;
+    color: #f0ffff;
+    font-weight: bold;
+    border: 0;
 }
 
 /* MAIN SPEC ELEMENT  */
@@ -150,15 +177,105 @@ fieldset {
     margin: 5rem auto;
 }
 
+#bookmarks, #profile {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+}
+
+#profile table {
+    width: 60%;
+    margin: 5rem auto;
+    padding: 1.5rem;
+    color: #f0ffff;
+    background-color: #202020af;
+    border-radius: 1rem;
+}
+
+#bookmark-list {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: auto;
+    width: 75%;
+}
+
+#search-bar form, .category-list {
+    background-color: #20202075;
+    border-radius: 0.5rem;
+    display: flex;
+    width: 50%;
+    margin: auto;
+    flex-wrap: wrap;
+}
+
+#search-bar form input {
+    background: url("./assets/images/google_logo.svg")
+        no-repeat;
+    background-position: 0.5rem;
+    border: 1px solid #27262b;
+    background-color: #f0ffff;
+    border-radius: 0.5rem;
+    width: 100%;
+    margin: 0.5rem;
+    padding: 0.5rem 3rem;
+    justify-content: center;
+}
+
+.category-list select {
+    background-position: 0.5rem;
+    border: 1px solid #27262b;
+    background-color: #f0ffff;
+    border-radius: 0.5rem;
+    width: 100%;
+    margin: 0.5rem;
+    padding: 0.5rem;
+    justify-content: center;
+}
+
+.Card {
+    margin: 2rem;
+    background-color: #202020;
+    border: 1px solid #202020;
+    box-shadow: 0 0 5px #202020;
+    text-align: center;
+    transform: scale(1);
+}
+
+.Card img {
+    width: 150px;
+    height: auto;
+}
+
+.Card h3 {
+    color: #f0ffff;
+    font-weight: bold;
+    font-size: medium;
+    text-transform: uppercase;
+}
+
+.Card a {
+    text-decoration: none;
+}
+
+.Card:hover {
+    transform: scale(1.05);
+}
+
+
 /* FOOTER */
 
 footer {
     width: 100%;
-    padding: 1rem 0;
+    padding: 0.01rem 0;
+    margin: 3rem 0 0 0;
     color: #f0ffff;
     background-color: #20202075;
+}
+
+footer > p {
     text-align: center;
-    bottom: 0;
 }
 
 @media screen and (min-width: 768px) {
@@ -169,7 +286,13 @@ footer {
 
 
     .menu-display {
-        top: 5rem;
+        top: 6rem;
         width: 25%;
     }
+
+    footer {
+        position: fixed;
+        bottom: 0;
+    }
 }
+

@@ -1,8 +1,7 @@
-import style from "./style.module.css";
 
-function Button({ isDisabled, loadStyle, onClickHandler, children }) {
+function Button({ isDisabled, onClickHandler, children }) {
     return (
-        <button className={`${loadStyle === style.btn}`} disabled={isDisabled} onClick={onClickHandler}>
+        <button disabled={isDisabled} onClick={onClickHandler}>
             {children}
         </button>
     );

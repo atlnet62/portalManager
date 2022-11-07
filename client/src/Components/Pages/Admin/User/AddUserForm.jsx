@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { addUser } from "../../../../services/API/user";
 
-function Addform() {
+function AddUserForm() {
     const TOKEN = localStorage.getItem("uat");
 
     const [inputs, setInputs] = useState({email:""});
@@ -48,4 +48,4 @@ function Addform() {
     );
 }
 
-export default Addform;
+export default AddUserForm;

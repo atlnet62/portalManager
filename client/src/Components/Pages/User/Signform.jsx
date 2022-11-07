@@ -29,10 +29,9 @@ function Signform({ formType }) {
             setMsg(response.data.msg);
             return;
         }
-        // refecto en tablea en fin de projet
         localStorage.setItem("uat", response.data.token);
         
-        navigate("/portal");
+        navigate("/main");
     };
 
     const handleSignup = async () => {

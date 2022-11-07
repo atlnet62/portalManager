@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 import Error from "../../Pages/Error";
 
-function Panel({ myProfile }) {
+function MainPanel({ myProfile }) {
     
     const [isAdmin, setIsAdmin] = useState(false);
 
@@ -22,7 +22,7 @@ function Panel({ myProfile }) {
             <h2>ADMIN DASHBOARD</h2>
 
             <section id="user_panel">
-                <Link to="user/all">User list</Link>
+                <Link className="btn" to="user/all">User list</Link>
             </section>
 
             <section>
@@ -37,4 +37,4 @@ function Panel({ myProfile }) {
     );
 }
 
-export default Panel;
+export default MainPanel;

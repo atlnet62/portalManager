@@ -56,7 +56,7 @@ function Header() {
                         </Link>
                     ) : (
                         <>
-                            <Link to="/portal"><FontAwesomeIcon icon={faChalkboard} />Portal</Link>
+                            <Link to="/main"><FontAwesomeIcon icon={faChalkboard} />Bookmarks</Link>
                             <Link to="/user/profile">
                                 <FontAwesomeIcon icon={faUser} />
                                 Profile

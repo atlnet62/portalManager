@@ -4,37 +4,40 @@ import HOC from "../helpers/HOC";
 // Homepage
 import Home from "../Components/Pages/Home";
 
-// Bookmark management
-import Bookmark from "../Components/Pages/Bookmark/Index";
-import BookmarkAddForm from "../Components/Pages/Bookmark/AddForm";
+// Main Management
+    //A/ Bookmark
+import MainPanel from "../Components/Pages/Main/Index";
+import AddMenu from "../Components/Pages/Main/AddMenu";
+import AddBookmarkForm from "../Components/Pages/Main/Bookmark/AddBookmarkForm";
+    //B/ Category
+import AddCategoryForm from "../Components/Pages/Main/Category/AddCategoryForm";
 
 // Admin management
 import Admin from "../Components/Pages/Admin/Index";
-import UserTable from "../Components/Pages/Admin/User/Index";
-import Addform from "../Components/Pages/Admin/User/AddForm";
-import UserDetail from "../Components/Pages/Admin/User/Detail";
+import UserList from "../Components/Pages/Admin/User/UserList";
+import AddUserForm from "../Components/Pages/Admin/User/AddUserForm";
+import UserDetail from "../Components/Pages/Admin/User/UserDetail";
 import ResetPasswordFormAdmin from "../Components/Pages/Admin/User/ResetPasswordForm";
-import ChangeMailForm from "../Components/Pages/Admin/User/ChangeMailForm";
+import ChangeMailFormAdmin from "../Components/Pages/Admin/User/ChangeMailForm";
 
 // User Management
-import User from "../Components/Pages/User/Index";
 import Signout from "../Components/Pages/User/Signout";
 import Signup from "../Components/Pages/User/Signup";
+import User from "../Components/Pages/User/Index";
 import Profile from "../Components/Pages/User/Profile";
 import ResetPasswordFormUser from "../Components/Pages/User/ResetPasswordForm";
-import ChangeAliasFormUser from "../Components/Pages/User/ChangeForm";
-
-
+import ChangeAliasFormUser from "../Components/Pages/User/ChangeAliasForm";
 
 function Router() {
     return (
         <Routes>
-
             <Route index path="/" element={<Home />} />
             <Route index path="home" element={<Home />} />
 
-            <Route path="portal" element={<HOC child={Bookmark} isAuthRequired={true} />}>
-            <Route path="add" element={<HOC child={BookmarkAddForm} isAuthRequired={true} />} />
+            <Route path="main" element={<HOC child={MainPanel} isAuthRequired={true} />}>
+                <Route path="add" element={<HOC child={AddMenu} isAuthRequired={true} />} />
+                <Route path="bookmark/add" element={<HOC child={AddBookmarkForm} isAuthRequired={true} />} />
+                <Route path="category/add" element={<HOC child={AddCategoryForm} isAuthRequired={true} />} />
             </Route>
 
             <Route path="user" element={<User />}>
@@ -46,13 +49,12 @@ function Router() {
             </Route>
 
             <Route path="admin" element={<HOC child={Admin} isAuthRequired={true} />}>
-                <Route path="user/add" element={<HOC child={Addform} isAuthRequired={true} />} />
-                <Route path="user/all" element={<HOC child={UserTable} isAuthRequired={true} />} />
+                <Route path="user/all" element={<HOC child={UserList} isAuthRequired={true} />} />
+                <Route path="user/add" element={<HOC child={AddUserForm} isAuthRequired={true} />} />
                 <Route path="user/detail/:uuid" element={<HOC child={UserDetail} isAuthRequired={true} />} />
                 <Route path="user/detail/:uuid/reset_password" element={<HOC child={ResetPasswordFormAdmin} isAuthRequired={true} />} />
-                <Route path="user/detail/:uuid/change_mail" element={<HOC child={ChangeMailForm} isAuthRequired={true} />} />
+                <Route path="user/detail/:uuid/change_mail" element={<HOC child={ChangeMailFormAdmin} isAuthRequired={true} />} />
             </Route>
-
         </Routes>
     );
 }
