@@ -1,4 +1,6 @@
 import Model from "../models/model.js";
+import screenshot from "capture-website";
+import fs from "fs";
 
 /**
  * Verified if category exist
@@ -27,6 +29,20 @@ export const addBookmark = async (request, response, next) => {
     };
 
     const queryAddB = `INSERT INTO bookmark (title, link, click_counter, picture_title) VALUES (?,?,0,?)`;
+
+    try {
+        await screenshot.file(bookmarkDatas.link, `./server/public/datas/${uuid}/cache/${bookmarkDatas.picture_title}`, {
+            x: 0,
+            y: 0,
+            width: 1280,
+            height: 720,
+            scaleFactor: 1,
+            overwrite: true,
+            type: 'webp',
+        });
+    } catch (error) {
+        console.log(error);
+    }
 
     try {
         const resultBookmark = await Model.saveData(queryAddB, bookmarkDatas);
@@ -65,7 +81,7 @@ export const addBookmark = async (request, response, next) => {
 export const allBookmark = async (request, response, next) => {
     const bookmarkDatas = {
         key: request.params.uuid,
-        query: "SELECT bookmark_id, category_id, title, link, click_counter, picture_title FROM bookmark_category_link JOIN bookmark ON bookmark_id = bookmark.id WHERE user_uuid = ?",
+        query: "SELECT bookmark_id, category_id, title, link, click_counter, picture_title FROM bookmark_category_link JOIN bookmark ON bookmark_id = bookmark.id WHERE user_uuid = ? ORDER BY click_counter DESC",
     };
 
     try {
@@ -90,6 +106,7 @@ export const allBookmark = async (request, response, next) => {
 
 export const removeBookmark = async (request, response, next) => {
     const bookmarkID = request.params.bookmarkID;
+    const { uuid } = request.params
 
     const checkDatas = await checkBookmark(request, response, next, bookmarkID, "id", "bookmark", "id");
 
@@ -103,20 +120,29 @@ export const removeBookmark = async (request, response, next) => {
 
     const bookmarkDatas = {
         key: bookmarkID,
-        // Modified to delete dates user inside multitable
         query: "DELETE FROM bookmark WHERE id = ?",
     };
 
     const linkDatas = {
         key: bookmarkID,
-        // Modified to delete dates user inside multitable
         query: "DELETE FROM bookmark_category_link WHERE bookmark_id = ?",
     };
 
+    const dataPicture = {
+        key: bookmarkID,
+        query: "SELECT picture_title FROM bookmark WHERE bookmark.id = ?",
+    };
     try {
+        const result = await Model.getDataByKey(dataPicture);
+        const path = `./server/public/datas/${uuid}/cache/${result[0].picture_title}`;
+        
         await Model.removeDataByKey(linkDatas);
         await Model.removeDataByKey(bookmarkDatas);
-
+        
+        fs.unlink(path, (error) => {
+            return next(error);
+        })
+        
         response.status(200).json({
             isRemoved: true,
         });
@@ -124,7 +150,6 @@ export const removeBookmark = async (request, response, next) => {
         return next(error);
     }
 };
-
 
 export const selectBookmark = async (request, response, next) => {
     const { bookmarkID, uuid } = request.params;
@@ -154,8 +179,7 @@ export const selectBookmark = async (request, response, next) => {
     } catch (error) {
         return next(error);
     }
-}
-
+};
 
 export const updateCounter = async (request, response, next) => {
     const { bookmarkID, uuid } = request.params;
@@ -181,7 +205,7 @@ export const updateCounter = async (request, response, next) => {
         const updateDatas = {
             click_counter: newCounter,
             idBookmark: bookmarkID,
-        }
+        };
 
         const query = `UPDATE bookmark SET click_counter = ? WHERE id = ?`;
 
@@ -191,7 +215,6 @@ export const updateCounter = async (request, response, next) => {
             response.status(200).json({
                 isModified: true,
             });
-
         } catch (error) {
             return next(error);
         }
@@ -200,4 +223,4 @@ export const updateCounter = async (request, response, next) => {
     } catch (error) {
         return next(error);
     }
-}
+};

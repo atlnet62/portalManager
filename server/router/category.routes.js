@@ -1,21 +1,17 @@
 import express from "express";
-import {
-    addCategory,
-    allCategory,
-    removeCategory,
-    updateCategory,
-} from "../controllers/category.js";
+import { addCategory, allCategory, removeCategory, updateCategory } from "../controllers/category.js";
+import {auth} from "../middlewares/auth.js"
 
 const router = express.Router();
 /**
  * Create or login routes
  */
 
-router.post("/add/:uuid", addCategory);
-router.delete("/remove/:categoryID", removeCategory);
+router.post("/add", auth, addCategory);
+router.delete("/remove/:categoryID", auth, removeCategory);
 
-router.get("/all/:uuid", allCategory);
+router.get("/all", auth, allCategory);
 
-router.patch("/update/:categoryID", updateCategory);
+router.patch("/update/:categoryID", auth, updateCategory);
 
 export default router;

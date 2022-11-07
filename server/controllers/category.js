@@ -59,8 +59,6 @@ export const removeCategory = async (request, response, next) => {
         query: "DELETE FROM category WHERE id = ?",
     };
 
-    console.log(datas);
-
     try {
         await Model.removeDataByKey(datas);
         response.status(200).json({
