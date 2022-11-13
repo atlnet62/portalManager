@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faLock, faLockOpen, faUser, faHouseChimney, faDashboard, faChalkboard } from "@fortawesome/free-solid-svg-icons";
+import { faLock, faLockOpen, faUser, faHouseChimney, faDashboard, faChalkboard, faXmark, faBars, faMailBulk } from "@fortawesome/free-solid-svg-icons";
 
 function Header() {
     const { isLogged, myProfile } = useSelector((state) => ({ ...state.user }));
@@ -33,12 +33,15 @@ function Header() {
                 {widthScreen < 3840 && (
                     <abbr title="Menu">
                         <button id="menu-btn" onClick={handleClick}>
-                            {/* Bouton classique en menu burger */}
-                            {/* {<FontAwesomeIcon icon={isActive ? faXmark : faBars} />}
-                            {widthScreen > 768 && " MENU"}{" "} */}
-
-                            {/* Menu version new génération avec avatar */}
-                            {myProfile !== null ? <img src={`/datas/avatars/${myProfile.avatar}`} alt="this is the avatar" /> : <img src={`/datas/avatars/13.png`} alt="this is the avatar" />}
+                            {myProfile !== null ? (
+                                myProfile.avatar === "00.png" ? (
+                                    <img src={`/datas/avatars/${myProfile.avatar}`} alt="this is the avatar" className="rotate" />
+                                ) : (
+                                    <img src={`/datas/avatars/${myProfile.avatar}`} alt="this is the avatar" />
+                                )
+                            ) : (
+                                <FontAwesomeIcon icon={isActive ? faXmark : faBars} />
+                            )}
                         </button>
                     </abbr>
                 )}
@@ -56,7 +59,10 @@ function Header() {
                         </Link>
                     ) : (
                         <>
-                            <Link to="/main"><FontAwesomeIcon icon={faChalkboard} />Bookmarks</Link>
+                            <Link to="/main">
+                                <FontAwesomeIcon icon={faChalkboard} />
+                                Bookmarks
+                            </Link>
                             <Link to="/user/profile">
                                 <FontAwesomeIcon icon={faUser} />
                                 Profile
@@ -76,6 +82,10 @@ function Header() {
                             </Link>
                         </>
                     )}
+                    <Link to="/contact">
+                        <FontAwesomeIcon icon={faMailBulk} />
+                        Contact
+                    </Link>
                 </nav>
             </header>
             <div className={`${overlay ? "menu-overlay" : ""}`} onClick={handleClick}></div>

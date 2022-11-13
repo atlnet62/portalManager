@@ -9,8 +9,8 @@ function Signform({ formType }) {
     const navigate = useNavigate();
     const email = useRef();
 
-    const [inputs, setInputs] = useState({ email: "", password: "" });
-    const [msg, setMsg] = useState(null);
+    const [userInfos, setUserInfos] = useState({ email: "", password: "" });
+    const [message, setMessage] = useState(null);
 
     const onSubmitHandler = (e) => {
         e.preventDefault();
@@ -20,32 +20,48 @@ function Signform({ formType }) {
         if (formType === "signup") {
             handleSignup();
         }
-        setInputs({ email: "", password: "" });
+        setUserInfos({ email: "", password: "" });
     };
 
     const handleSignin = async () => {
-        const response = await signin(validate("signin", inputs));
-        if (response.status === 404) {
-            setMsg(response.data.msg);
-            return;
-        }
-        localStorage.setItem("uat", response.data.token);
-        
-        navigate("/main");
+        const userInfosValidation = validate("signin", userInfos);
+        if (userInfosValidation === true) {
+                try {
+                    const response = await signin(userInfos);
+                    if(response.status !== 200) {
+                        if (response.status === 404) {
+                            setMessage(response.data.message);
+                            return;
+                        } else {
+                            setMessage("Problem to add the user, Please contact your admin.");
+                        }
+                    }
+                    localStorage.setItem("uat", response.data.token);
+                } catch (error) {
+                    setMessage("We have some connection problems with the database.");
+                }
+                navigate("/main");
+            } else {
+                setMessage(userInfosValidation);
+            }
     };
 
     const handleSignup = async () => {
-        const inputsValidation = validate("signup", inputs);
-        if (inputsValidation === true) {
-            const response = await signup(inputs);
-            if (response.status === 409) {
-                setMsg(response.data.msg);
-                return;
+        const userInfosValidation = validate("signup", userInfos);
+        if (userInfosValidation === true) {
+            const response = await signup(userInfos);
+            if(response.status !== 200) {
+                if (response.status === 409) {
+                    setMessage(response.data.errorMessage);
+                    return;
+                } else {
+                    setMessage("Problem to add the user, Please contact your admin.");
+                }
             } else {
                 navigate("/user");
             }
         } else {
-            setMsg(inputsValidation);
+            setMessage(userInfosValidation);
         }
     };
 
@@ -66,27 +82,27 @@ function Signform({ formType }) {
 
                         <input
                             ref={email}
-                            type="text"
+                            type="email"
                             placeholder="E-mail ?"
-                            value={inputs.email}
+                            value={userInfos.email}
                             onChange={(e) =>
-                                setInputs({ ...inputs, email: e.target.value })
+                                setUserInfos({ ...userInfos, email: e.target.value })
                             }
                         />
 
                         <input
                             type="password"
                             placeholder="Password ?"
-                            value={inputs.password}
+                            value={userInfos.password}
                             onChange={(e) =>
-                                setInputs({
-                                    ...inputs,
+                                setUserInfos({
+                                    ...userInfos,
                                     password: e.target.value,
                                 })
                             }
                         />
 
-                        {msg && <p>{msg}</p>}
+                        {message && <p className="popup-log">{message}</p>}
 
                         <input type="submit" value="Send" />
                     </fieldset>

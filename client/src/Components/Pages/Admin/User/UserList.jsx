@@ -3,6 +3,8 @@ import Loading from "../../../UI/Elements/Loading";
 import { allUser, removeUser } from "../../../../services/API/user";
 import { Link } from "react-router-dom";
 import Button from "../../../UI/Elements/Button/Index";
+import { faXmark, faIdCard } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 function UserList() {
     const TOKEN = localStorage.getItem("uat");
@@ -15,7 +17,6 @@ function UserList() {
     const clickRemove = async (e, uuid) => {
         e.preventDefault();
         try {
-            // supprimer avant les données dans category, bookmark avant de supprimer le user
             const response = await removeUser(TOKEN, uuid);
             if (response.data.isRemoved) {
                 setMessage("User Deleted !");
@@ -25,7 +26,7 @@ function UserList() {
             newListUsers.splice(indexUser.indexOf(uuid), 1);
             setUsers(newListUsers);
         } catch (error) {
-            console.log(error);
+            setMessage("We have some connection problems with the database.");
         }
     };
 
@@ -36,7 +37,7 @@ function UserList() {
                 setUsers(users.data.usersDatas);
                 setNbUsers(users.data.nbUsers);
             } catch (error) {
-                console.log(error);
+                setMessage("We have some connection problems with the database.");
             }
         };
         getUsers();
@@ -44,14 +45,15 @@ function UserList() {
 
     return (
         <main id="user-list">
-            <section id="admin-bar">
-                <Link to={`./../add`}>Add User</Link>
-            </section>
-            <div className="divider"></div>
+
+            { message &&
+            <section className="popup">
+                <p>{message}</p>
+            </section>}
+
             <section>
-                <h2>User list by email</h2>
-                <p>Total {nbUsers} users</p>
-                <table className="user-list">
+                <h3>User list by email</h3>
+                <table>
                     <thead>
                         <tr>
                             <th>#</th>
@@ -61,6 +63,7 @@ function UserList() {
                             <th colSpan="2">Actions</th>
                         </tr>
                     </thead>
+
                     <tbody>
                         {users.length < 0 ? (
                             <Loading />
@@ -75,10 +78,12 @@ function UserList() {
                                             <td>{user.alias}</td>
                                             <td>{user.user_role}</td>
                                             <td>
-                                                <Link to={`./../detail/${user.uuid}`}>DETAIL</Link>
+                                                <Link className="btn-link" to={`user/detail/${user.uuid}`}>
+                                                    <FontAwesomeIcon icon={faIdCard} />
+                                                </Link>
                                             </td>
                                             <td>
-                                                <Button onClickHandler={(e) => clickRemove(e, user.uuid)}>SUPPRIMER</Button>
+                                                <Button className="btn-del" onClickHandler={(e) => clickRemove(e, user.uuid)}><FontAwesomeIcon icon={faXmark} /></Button>
                                             </td>
                                         </tr>
                                     </Fragment>
@@ -88,13 +93,15 @@ function UserList() {
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td colSpan="5">{message}</td>
+                            <td colSpan="6">Pagination</td>
+                        </tr>
+                        <tr>
+                            <td colSpan="6">Total {nbUsers} users</td>
                         </tr>
                     </tfoot>
                 </table>
-                <div className="divider"></div>
-                <Link to="../../admin">Previous</Link>
             </section>
+
         </main>
     );
 }

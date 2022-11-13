@@ -1,11 +1,30 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-
 import Error from "../../Pages/Error";
+import Button from "../../UI/Elements/Button/Index";
+import AddUserForm from "./User/AddForm";
+import UserList from "./User/UserList";
 
 function MainPanel({ myProfile }) {
     
     const [isAdmin, setIsAdmin] = useState(false);
+
+    const [userToggle, setUserToggle] = useState(true);
+    const [userFormToggle, setUserFormToggle] = useState(false);
+
+
+    const clickSwitch = (e, choice) => {
+        e.preventDefault();
+        if (choice === 0) {
+            setUserToggle(!userToggle);
+            setUserFormToggle(false);
+
+        }
+        if (choice === 1) {
+            setUserFormToggle(!userFormToggle);
+            setUserToggle(false);
+
+        }
+    };
 
     useEffect(() => {
         const checkAdmin = () => {
@@ -20,16 +39,14 @@ function MainPanel({ myProfile }) {
     return isAdmin ? (
         <main id="panel">
             <h2>ADMIN DASHBOARD</h2>
-
-            <section id="user_panel">
-                <Link className="btn" to="user/all">User list</Link>
+            <section className="btn-manager">
+                <Button className="btn" onClickHandler={(e) => clickSwitch(e, 0)}>Show User List</Button>
+                <Button className="btn" onClickHandler={(e) => clickSwitch(e, 1)}>Show User Form</Button>
             </section>
 
-            <section>
-                <p>
-                    
-                </p>
-            </section>
+            {userToggle && <UserList />}
+            {userFormToggle && <AddUserForm />}
+
 
         </main>
     ) : (
