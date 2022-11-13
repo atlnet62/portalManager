@@ -8,12 +8,12 @@ export const auth = (request, response, next) => {
 
     if (TOKEN === undefined || TOKEN === "null") {
         
-        response.status(404).json({ msg: "Token not found !" });
+        response.status(404).json({ errorCode: 404, errorMessage: "Token not found !" });
         return;
     } else {
         jwt.verify(TOKEN, TOKEN_SECRET, (error, decoded) => {
             if (error) {
-                response.status(401).json({ status: 401, msg: "Invalid Token" });
+                response.status(401).json({ errorCode: 401, errorMessage: "Invalid Token" });
                 return;
             } else {
                 request.params.uuid = decoded.uuid;

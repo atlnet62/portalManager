@@ -2,25 +2,29 @@ import Model from "../models/model.js";
 import { v4 as uuidv4 } from "uuid";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import fs from "fs";
 
 // import mailing from '../config/mailing.js';
 
 const { TOKEN_SECRET } = process.env;
 const saltRounds = 10;
 
+const charStandard = /[><()[\]{}/'"&~#|`\\^@°=+*¨^$£µ%§,?;:!£¤-]/g;
+const charNumber = /[0-9]/g;
+const charLogin = /[><()[\]{}/\\'"]/g;
+
 /**
  * Verified if user exist
  */
 
 const checkUser = async (request, response, next, searchValue, column, table, searchKey) => {
-    const userDatas = {
+    const datas = {
         key: searchValue,
         query: `SELECT ${column} FROM ${table} WHERE ${searchKey} = ?`,
     };
     try {
-        const userDatasResponse = await Model.getDataByKey(userDatas);
-
-        return userDatasResponse[0];
+        const result = await Model.getDataByKey(datas);
+        return result[0];
     } catch (error) {
         return next(error);
     }
@@ -31,9 +35,35 @@ const checkUser = async (request, response, next, searchValue, column, table, se
  */
 
 export const updateUser = async (request, response, next) => {
-
-    const { email, reset_password, alias, validation_account, avatar, role_id } = request.body;
     const uuid = request.params.userUUID;
+    const { email, reset_password, alias, validation_account, avatar, role_id } = request.body;
+
+        // To check the character allow
+        let checkRoleValue = role_id.match(charNumber);
+        let checkResetValue = reset_password.match(charNumber);
+        let checkValidationValue = validation_account.match(charNumber);
+
+        if (checkRoleValue === null || checkResetValue === null || checkValidationValue === null) {
+            checkRoleValue = '';
+            checkResetValue = '';
+            checkValidationValue = '';
+        }
+
+        if (uuid.match(charLogin) || email.match(charLogin) || alias.match(charStandard) || avatar.match(charLogin) || validation_account.length !== checkRoleValue.length || role_id.length !== checkRoleValue.length || reset_password.length !== checkResetValue.length ) {
+            const error = {
+                code: 400,
+                message: "Character(s) not allowed.",
+            };
+            return next(error);
+        } if (email.length > 255 || alias.length > 60 || avatar.length > 60 || role_id.length > 1 || validation_account.length > 1 || reset_password.length > 1) {
+            const error = {
+                code: 400,
+                message: "The character limit is out. please could you verify each field. (avatar & alias : 60 max, email : 255 max, role, reset, validation : 1 max)",
+            };
+            return next(error);
+        }
+
+
     const table = "user";
     const column = "email";
     const searchKey = "uuid";
@@ -77,6 +107,25 @@ export const updateUser = async (request, response, next) => {
 
 export const removeUser = async (request, response, next) => {
     const uuid = request.params.userUUID;
+
+        // To check the character allow
+        if (uuid.match(charLogin)) {
+            const error = {
+                code: 400,
+                message: "Character(s) not allowed.",
+            };
+            return next(error);
+        }
+    
+        if (uuid.length > 255) {
+            const error = {
+                code: 400,
+                message: "The character limit is out. please could you verify each field. (uuid : 255 max)",
+            };
+            return next(error);
+        }
+
+
     const table = "user";
     const column = "email";
     const searchKey = "uuid";
@@ -93,12 +142,24 @@ export const removeUser = async (request, response, next) => {
 
     const datas = {
         key: uuid,
-        // Modified to delete dates user inside multitable
         query: "DELETE FROM user WHERE uuid = ?",
     };
 
     try {
         await Model.removeDataByKey(datas);
+        // delete the folder on server
+        const path = `./server/public/datas/${uuid}`;
+
+        fs.access(path, (error) => {
+            if (!error) {
+                fs.rm(path, { recursive: true }, (error) => {
+                    if (error) {
+                        return next(error);
+                    }
+                });
+            }
+        });
+
         response.status(200).json({
             isRemoved: true,
         });
@@ -112,9 +173,25 @@ export const removeUser = async (request, response, next) => {
  */
 
 export const resetPassword = async (request, response, next) => {
-
     const uuid = request.params.userUUID;
     const { password } = request.body;
+
+    // To check the character allow
+        if (uuid.match(charLogin) || password.match(charLogin)) {
+            const error = {
+                code: 400,
+                message: "Character(s) not allowed.",
+            };
+            return next(error);
+        }
+    
+        if (uuid.length > 255 || password.length > 100) {
+            const error = {
+                code: 400,
+                message: "The character limit is out. please could you verify each field. (password : 100 max)",
+            };
+            return next(error);
+        }
 
     const checkUserDatas = await checkUser(request, response, next, uuid, "email", "user", "uuid");
 
@@ -156,6 +233,24 @@ export const resetPassword = async (request, response, next) => {
 
 export const addUser = async (request, response, next) => {
     const { email } = request.body;
+    const uuidCreated = uuidv4();
+
+    // To check the character allow
+    if (email.match(charLogin)) {
+        const error = {
+            code: 400,
+            message: "Character(s) not allowed.",
+        };
+        return next(error);
+    }
+
+    if (email.length > 255) {
+        const error = {
+            code: 400,
+            message: "The character limit is out. please could you verify each field. email : 255 max",
+        };
+        return next(error);
+    }
 
     const checkUserDatas = await checkUser(request, response, next, email, "email", "user", "email");
 
@@ -167,12 +262,24 @@ export const addUser = async (request, response, next) => {
         return next(error);
     }
 
+    // créer un dossier de données pour l'utilisateur
+    const path = `./server/public/datas/${uuidCreated}`;
+    fs.access(path, (error) => {
+        if (error) {
+            fs.mkdir(path, { recursive: true }, (error) => {
+                if (error) {
+                    return next(error);
+                }
+            });
+        }
+    });
+
     try {
         const password = Math.random().toString(36).replace("0.", "");
 
         bcrypt.hash(password, saltRounds, async (error, hash) => {
             const dataUser = {
-                uuid: uuidv4(),
+                uuid: uuidCreated,
                 email: email,
                 password: hash,
             };
@@ -208,13 +315,30 @@ export const selectUser = async (request, response, next) => {
         uuid = request.params.userUUID;
     }
 
-    const userDatas = {
+    // To check the character allow
+    if (uuid.match(charLogin)) {
+        const error = {
+            code: 400,
+            message: "Character(s) not allowed.",
+        };
+        return next(error);
+    }
+
+    if (uuid.length > 255) {
+        const error = {
+            code: 400,
+            message: "The character limit is out. please could you verify each field. (uuid : 255 max)",
+        };
+        return next(error);
+    }
+
+    const datas = {
         key: uuid,
         query: "SELECT user.id AS user_id, uuid, email, reset_password, alias, validation_account, register_date, avatar, role.id AS role_id, role.title AS user_role FROM user JOIN role ON role_id = role.id WHERE uuid = ?",
     };
 
     try {
-        const result = await Model.getDataByKey(userDatas);
+        const result = await Model.getDataByKey(datas);
 
         if (!result[0]) {
             const error = {
@@ -270,18 +394,35 @@ export const allUser = async (request, response, next) => {
 
 export const signin = async (request, response, next) => {
     const { email, password } = request.body;
-    const userDatas = {
+    const datas = {
         key: email,
         query: "SELECT * FROM user WHERE email = ?",
     };
 
+    // To check the character allow
+    if (email.match(charLogin) || password.match(charLogin)) {
+        const error = {
+            code: 400,
+            message: "Character(s) not allowed.",
+        };
+        return next(error);
+    }
+
+    if (email.length > 255 || password.length > 100) {
+        const error = {
+            code: 400,
+            message: "The character limit is out. please could you verify each field. (email : 255 max, password : 100 max)",
+        };
+        return next(error);
+    }
+
     try {
-        const result = await Model.getDataByKey(userDatas);
+        const result = await Model.getDataByKey(datas);
         const isSamePwd = result[0] ? await bcrypt.compare(password, result[0].password) : null;
 
         if (!result[0] || !isSamePwd) {
             response.status(404).json({
-                msg: "Bad Login or/and Password",
+                message: "Bad Login or/and Password, Please try again.",
             });
             return;
         }
@@ -302,6 +443,25 @@ export const signin = async (request, response, next) => {
 
 export const signup = async (request, response, next) => {
     const { email, password } = request.body;
+    const uuidCreated = uuidv4();
+
+    // To check the character allow
+    if (email.match(charLogin) || password.match(charLogin)) {
+        const error = {
+            code: 400,
+            message: "Character(s) not allowed.",
+        };
+        return next(error);
+    }
+    
+    if (email.length > 255 || password.length > 100) {
+        const error = {
+            code: 400,
+            message: "The character limit is out. please could you verify each field. (email : 255 max, password : 100 max)",
+        };
+        return next(error);
+    }
+
     const checkUserDatas = await checkUser(request, response, next, email, "email", "user", "email");
 
     if (checkUserDatas) {
@@ -313,15 +473,27 @@ export const signup = async (request, response, next) => {
     }
 
     try {
+        // créer un dossier de données pour l'utilisateur
+        const path = `./server/public/datas/${uuidCreated}`;
+        fs.access(path, (error) => {
+            if (error) {
+                fs.mkdir(path, { recursive: true }, (error) => {
+                    if (error) {
+                        return next(error);
+                    }
+                });
+            }
+        });
+
         bcrypt.hash(password, saltRounds, async (error, hash) => {
             const dataUser = {
-                uuid: uuidv4(),
+                uuid: uuidCreated,
                 email: email,
                 password: hash,
             };
 
             const query =
-                "INSERT INTO user (uuid, email, password, reset_password, alias, role_id, validation_account, register_date, avatar) VALUES ( ?, ?, ?, 0, NULL, 1, 0, now(), 'avatarDefault.png')";
+                "INSERT INTO user (uuid, email, password, password_date, reset_password, alias, role_id, validation_account, register_date, avatar) VALUES ( ?, ?, ?, NOW(), 0, NULL, 1, 0, NOW(), '00.png')";
 
             try {
                 await Model.saveData(query, dataUser);

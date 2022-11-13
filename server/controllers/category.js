@@ -1,5 +1,9 @@
 import Model from "../models/model.js";
 
+const charStandard = /[><()[\]{}/'"&~#|`\\^@°=+*¨^$£µ%§,?;:!£¤-]/g;
+const charLogin = /[><()[\]{}/\\'"]/g;
+const charNumber = /[0-9]/g;
+
 /**
  * Verified if category exist
  */
@@ -20,6 +24,23 @@ const checkCategory = async (request, response, next, searchValue, column, table
 export const addCategory = async (request, response, next) => {
     const uuid = request.params.uuid;
     const { title } = request.body;
+
+    // To check the character allow
+    if (uuid.match(charLogin) || title.match(charStandard)) {
+        const error = {
+            code: 400,
+            message: "Character(s) not allowed.",
+        };
+        return next(error);
+    } 
+    
+    if (uuid.length > 255 || title.length > 60) {
+        const error = {
+            code: 400,
+            message: "The character limit is out. please could you verify each field. avatar & alias : 60 max, email : 255 max, role, reset, validation : 1 max",
+        };
+        return next(error);
+    }
 
     const categoryDatas = {
         title: title,
@@ -42,6 +63,27 @@ export const addCategory = async (request, response, next) => {
 
 export const removeCategory = async (request, response, next) => {
     const categoryID = request.params.categoryID;
+
+    // To check the character allow
+    let checkIdValue = categoryID.match(charNumber);
+
+    if (checkIdValue === null) {
+        checkIdValue = '';
+    }
+
+    if (checkIdValue.length !== categoryID.length) {
+        const error = {
+            code: 400,
+            message: "Character(s) not allowed.",
+        };
+        return next(error);
+    } if (categoryID.length > 11) {
+        const error = {
+            code: 400,
+            message: "The character limit is out. please could you verify each field. (id : 11 max)",
+        };
+        return next(error);
+    }
 
     const checkDatas = await checkCategory(request, response, next, categoryID, "id", "category", "id");
 
@@ -70,8 +112,28 @@ export const removeCategory = async (request, response, next) => {
 };
 
 export const allCategory = async (request, response, next) => {
+
+    const uuid = request.params.uuid;
+
+    // To check the character allow
+    if (uuid.match(charLogin)) {
+        const error = {
+            code: 400,
+            message: "Character(s) not allowed.",
+        };
+        return next(error);
+    } 
+    
+    if (uuid.length > 255) {
+        const error = {
+            code: 400,
+            message: "The character limit is out. please could you verify each field. avatar & alias : 60 max, email : 255 max, role, reset, validation : 1 max",
+        };
+        return next(error);
+    }
+
     const categoryDatas = {
-        key: request.params.uuid,
+        key: uuid,
         query: "SELECT id AS categoryID, title FROM category WHERE user_uuid = ?",
     };
 
@@ -98,8 +160,31 @@ export const allCategory = async (request, response, next) => {
 
 export const updateCategory = async (request, response, next) => {
     const { title } = request.body;
+    const { categoryID } = request.params;
 
-    const categoryID = request.params.categoryID;
+    // To check the character allow
+    let checkIdValue = categoryID.match(charNumber);
+
+    if (checkIdValue === null) {
+        checkIdValue = '';
+    }
+
+    if (checkIdValue.length !== categoryID.length || title.match(charStandard)) {
+        const error = {
+            code: 400,
+            message: "Character(s) not allowed.",
+        };
+        return next(error);
+    } 
+    
+    if (categoryID.length > 11 || title.length > 60) {
+        const error = {
+            code: 400,
+            message: "The character limit is out. please could you verify each field. (id : 11 max, title : 60 max)",
+        };
+        return next(error);
+    }
+    
     const table = "category";
     const column = "id";
     const searchKey = "id";

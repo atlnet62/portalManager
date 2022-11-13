@@ -21,11 +21,29 @@ const checkBookmark = async (request, response, next, searchValue, column, table
 
 export const addBookmark = async (request, response, next) => {
     const uuid = request.params.uuid;
+    const {title, link, picture_title, idCategory } = request.body
+
+    // To check the character allow
+    if (password.match(charLogin)) {
+        const error = {
+            code: 400,
+            message: "Character(s) not allowed.",
+        };
+        return next(error);
+    }
+
+    if (password.length > 100) {
+        const error = {
+            code: 400,
+            message: "The character limit is out. please could you verify each field. (password : 100 max)",
+        };
+        return next(error);
+    }
 
     const bookmarkDatas = {
-        title: request.body.title,
-        link: request.body.link,
-        picture_title: request.body.picture_title,
+        title: title,
+        link: link,
+        picture_title: picture_title,
     };
 
     const queryAddB = `INSERT INTO bookmark (title, link, click_counter, picture_title) VALUES (?,?,0,?)`;
@@ -41,29 +59,19 @@ export const addBookmark = async (request, response, next) => {
             type: 'webp',
         });
     } catch (error) {
-        console.log(error);
+        return next(error);
     }
 
     try {
-        const resultBookmark = await Model.saveData(queryAddB, bookmarkDatas);
+        const result = await Model.saveData(queryAddB, bookmarkDatas);
 
         let linkBookmarkUser = {
-            idBookmark: resultBookmark.insertId,
-            idCategory: request.body.idCategory,
+            idBookmark: result.insertId,
+            idCategory: idCategory === 0 ? null : idCategory,
             user_uuid: uuid,
         };
-
-        let queryAddL = null;
-
-        if (linkBookmarkUser.idCategory === "") {
-            linkBookmarkUser = {
-                idBookmark: resultBookmark.insertId,
-                user_uuid: uuid,
-            };
-            queryAddL = `INSERT INTO bookmark_category_link (bookmark_id, user_uuid, date) VALUES (?, ?, NOW())`;
-        } else {
-            queryAddL = `INSERT INTO bookmark_category_link (bookmark_id, category_id, user_uuid, date) VALUES (?,?,?, NOW())`;
-        }
+        
+        const queryAddL = `INSERT INTO bookmark_category_link (bookmark_id, category_id, user_uuid, date) VALUES (?,?,?, NOW())`;
 
         try {
             await Model.saveData(queryAddL, linkBookmarkUser);
@@ -123,11 +131,6 @@ export const removeBookmark = async (request, response, next) => {
         query: "DELETE FROM bookmark WHERE id = ?",
     };
 
-    const linkDatas = {
-        key: bookmarkID,
-        query: "DELETE FROM bookmark_category_link WHERE bookmark_id = ?",
-    };
-
     const dataPicture = {
         key: bookmarkID,
         query: "SELECT picture_title FROM bookmark WHERE bookmark.id = ?",
@@ -136,12 +139,15 @@ export const removeBookmark = async (request, response, next) => {
         const result = await Model.getDataByKey(dataPicture);
         const path = `./server/public/datas/${uuid}/cache/${result[0].picture_title}`;
         
-        await Model.removeDataByKey(linkDatas);
         await Model.removeDataByKey(bookmarkDatas);
         
-        fs.unlink(path, (error) => {
-            return next(error);
-        })
+        fs.access(path, (error) => {
+            if (!error) {
+                fs.unlink(path, (error) => {
+                    return next(error);
+                })
+            }
+        });
         
         response.status(200).json({
             isRemoved: true,
@@ -220,6 +226,39 @@ export const updateCounter = async (request, response, next) => {
         }
 
         return;
+    } catch (error) {
+        return next(error);
+    }
+};
+
+export const updateBookmark = async (request, response, next) => {
+    const { bookmarkID } = request.params;
+
+const { title, link, click_counter, category_id } = request.body;
+
+    const datasBookmark = {
+        title: title,
+        link: link,
+        click_counter: click_counter,
+        key: bookmarkID,
+    };
+    const queryBookmark = "UPDATE bookmark SET title = ?, link = ?, click_counter = ? WHERE id = ? ";
+
+    const datasLink = {
+        category_id: category_id === 0 ? null : category_id,
+        key: bookmarkID,
+    };
+
+    const queryLink = "UPDATE bookmark_category_link SET category_id = ? WHERE bookmark_id = ?";
+
+    try {
+        await Model.saveData(queryBookmark, datasBookmark);
+        await Model.saveData(queryLink, datasLink);
+
+        response.status(200).json({
+            isModified: true,
+        });
+
     } catch (error) {
         return next(error);
     }

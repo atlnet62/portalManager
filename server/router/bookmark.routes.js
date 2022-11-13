@@ -1,5 +1,5 @@
 import express from "express";
-import { addBookmark, allBookmark, removeBookmark, selectBookmark, updateCounter } from "../controllers/bookmark.js";
+import { addBookmark, allBookmark, removeBookmark, selectBookmark, updateBookmark, updateCounter } from "../controllers/bookmark.js";
 
 import { auth } from "../middlewares/auth.js";
 
@@ -11,5 +11,6 @@ router.get("/all", auth, allBookmark);
 router.get("/:bookmarkID", auth, selectBookmark);
 
 router.patch("/update-counter/:bookmarkID", auth, updateCounter);
+router.patch("/update/:bookmarkID", auth, updateBookmark);
 
 export default router;

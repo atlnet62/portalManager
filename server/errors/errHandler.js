@@ -14,6 +14,5 @@ export const errorHandler = (error, request, response, next) => {
             errorCode: error.code,
             errorMessage: error.sqlMessage
         });
-        
     }
 }
