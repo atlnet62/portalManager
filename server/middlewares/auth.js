@@ -3,11 +3,9 @@ import jwt from "jsonwebtoken";
 const { TOKEN_SECRET } = process.env;
 
 export const auth = (request, response, next) => {
-
     const TOKEN = request.headers["x-access-token"];
 
     if (TOKEN === undefined || TOKEN === "null") {
-        
         response.status(404).json({ errorCode: 404, errorMessage: "Token not found !" });
         return;
     } else {
@@ -17,6 +15,7 @@ export const auth = (request, response, next) => {
                 return;
             } else {
                 request.params.uuid = decoded.uuid;
+                request.params.role_id = decoded.role_id;
                 next();
             }
         });

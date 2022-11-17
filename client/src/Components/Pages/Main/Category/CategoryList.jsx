@@ -1,7 +1,7 @@
 import { useEffect, useState, Fragment } from "react";
 import { allCategory, removeCategory, updateCategory } from "../../../../services/API/category";
 import Button from "../../../UI/Elements/Button/Index";
-import { faCheck, faPen, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faPen, faXmark, faArrowLeft, faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { validate } from "../../../../helpers/sanitize";
 
@@ -13,6 +13,10 @@ function CategoryList() {
     const [message, setMessage] = useState(null);
     const [edit, setEdit] = useState(false);
     const [editId, setEditId] = useState(0);
+
+    // hook sliders
+    const [min, setMin] = useState(0);
+    const [max, setMax] = useState(9);
 
     const clickRemove = async (e, id) => {
         e.preventDefault();
@@ -73,11 +77,30 @@ function CategoryList() {
         }
     };
 
+    const handlePageDec = (e) => {
+        e.preventDefault();
+        setMin(prev => prev - 10);
+        setMax(prev => prev - 10);
+    
+    }
+    
+    const handlePageInc = (e) => {
+        e.preventDefault();
+        if (max === categories.length) {
+            setMin(0);
+            setMax(9);
+            return;
+        }
+        setMin(prev => prev + 10)
+        setMax(prev => prev + 10)
+    
+    }
+
     useEffect(() => {
         const allCategories = async () => {
             try {
                 const categories = await allCategory(localStorage.getItem("uat"));
-                setCategories(categories.data.category_datas);
+                setCategories(categories.data.categoryDatas);
             } catch (error) {
                 setMessage("We have some connection problems with the database.");
             }
@@ -105,8 +128,8 @@ function CategoryList() {
                     </thead>
 
                     <tbody>
-                        {categories.map((category) => {
-                            return (
+                        {categories.map((category, index) => {
+                            return (index >= min && index <= max) && (
                                 <Fragment key={category.categoryID}>
                                     <tr>
                                         <td>{category.categoryID}</td>
@@ -136,6 +159,28 @@ function CategoryList() {
                             );
                         })}
                     </tbody>
+                    {
+                        categories.length > 10 &&
+                        <tfoot>
+                            <tr>
+
+                                {
+                                    min > 0 && 
+                                    <td>
+                                        <Button className="btn" onClickHandler={(e) => handlePageDec(e)}><FontAwesomeIcon icon={faArrowLeft} /></Button>
+                                    </td>
+                                }
+
+                                {
+                                    max < categories.length && 
+                                    <td>
+                                        <Button className="btn" onClickHandler={(e) => handlePageInc(e)}><FontAwesomeIcon icon={faArrowRight} /></Button>
+                                    </td>
+                                }
+
+                            </tr>
+                        </tfoot>
+                    }
                 </table>
             </section>
         </>

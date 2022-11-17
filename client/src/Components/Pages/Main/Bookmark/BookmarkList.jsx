@@ -2,19 +2,26 @@ import { useEffect, useState, Fragment } from "react";
 import { allCategory } from "../../../../services/API/category";
 import { getBookmarks, removeBookmark, updateBookmark } from "../../../../services/API/bookmark";
 import Button from "../../../UI/Elements/Button/Index";
-import { faPen, faXmark, faCheck } from "@fortawesome/free-solid-svg-icons";
+import { faPen, faXmark, faCheck, faArrowLeft, faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { validate } from "../../../../helpers/sanitize";
 
 function BookmarkList() {
     const TOKEN = localStorage.getItem("uat");
 
+    // hook cata et bookmark list
     const [bookmarks, setBookmarks] = useState([]);
     const [categories, setCategories] = useState([]);
+
+    // hook modify content bookmark
     const [bookmarkInfos, setBookmarkInfos] = useState({ bookmark_id: 0, title: "", link: "", click_counter: 0, category_id: 0 });
     const [message, setMessage] = useState(null);
     const [edit, setEdit] = useState(false);
     const [editId, setEditId] = useState(0);
+
+    // hook sliders
+    const [min, setMin] = useState(0);
+	const [max, setMax] = useState(9);
 
     const clickRemove = async (e, id) => {
         e.preventDefault();
@@ -79,26 +86,43 @@ function BookmarkList() {
         }
     };
 
+    const handlePageDec = (e) => {
+        e.preventDefault();
+        setMin(prev => prev - 10);
+        setMax(prev => prev - 10);
+    }
+    
+    const handlePageInc = (e) => {
+        e.preventDefault();
+        if (max >= bookmarks.length) {
+            setMin(0);
+            setMax(9);
+            return;
+        }
+        setMin(prev => prev + 10)
+        setMax(prev => prev + 10)
+    }
+
     useEffect(() => {
         const allCategories = async () => {
             try {
                 const categories = await allCategory(localStorage.getItem("uat"));
-                setCategories(categories.data.category_datas);
+                setCategories(categories.data.categoryDatas);
             } catch (error) {
                 setMessage("We have some connection problems with the database.");
             }
         };
         allCategories();
     }, []);
-
+    
     useEffect(() => {
         const allBookmarks = async () => {
             try {
                 const bookmarks = await getBookmarks(localStorage.getItem("uat"));
                 if (bookmarks.data.isRetrieved) {
-                    setBookmarks(bookmarks.data.bookmark_datas);
+                    setBookmarks(bookmarks.data.bookmarkDatas);
                 }
-
+                
                 if (bookmarks.status !== 200) {
                     setMessage("You can't list the bookmarks.");
                 }
@@ -132,8 +156,8 @@ function BookmarkList() {
                     </thead>
 
                     <tbody>
-                        {bookmarks.map((bookmark) => {
-                            return (
+                        {bookmarks.map((bookmark, index) => {
+                            return (index >= min && index <= max) && (
                                 <Fragment key={bookmark.bookmark_id}>
                                     <tr>
                                         <td>{bookmark.bookmark_id}</td>
@@ -192,7 +216,7 @@ function BookmarkList() {
                                             </Button>
                                         </td>
                                         <td>
-                                            <Button className="btn-del" onClickHandler={(e) => clickRemove(e, bookmark.bookmark_id)}>
+                                            <Button isDisabled={edit && true} className="btn-del" onClickHandler={(e) => clickRemove(e, bookmark.bookmark_id)}>
                                                 <FontAwesomeIcon icon={faXmark} />
                                             </Button>
                                         </td>
@@ -201,6 +225,25 @@ function BookmarkList() {
                             );
                         })}
                     </tbody>
+                    {
+                        bookmarks.length > 10 &&
+                        <tfoot>
+                            <tr>
+                                {
+                                    min > 0 && 
+                                        <td>
+                                            <Button className="btn" onClickHandler={(e) => handlePageDec(e)}><FontAwesomeIcon icon={faArrowLeft} /></Button>
+                                        </td>
+                                }
+                                {
+                                    max < bookmarks.length && 
+                                        <td>
+                                            <Button className="btn" onClickHandler={(e) => handlePageInc(e)}><FontAwesomeIcon icon={faArrowRight} /></Button>
+                                        </td>
+                                }
+                            </tr>
+                        </tfoot>
+                    }
                 </table>
             </section>
         </>

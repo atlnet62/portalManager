@@ -8,7 +8,7 @@ function AddBookmarkForm() {
 
     const title = useRef();
 
-    const [bookmarkInfos, setBookmarkInfos] = useState({ title: "", link: "", picture_title: "", idCategory: 0 });
+    const [bookmarkInfos, setBookmarkInfos] = useState({ title: "", link: "", picture: "", idCategory: 0 });
     const [categories, setCategories] = useState([]);
     const [message, setMessage] = useState(null);
 
@@ -41,7 +41,7 @@ function AddBookmarkForm() {
                 const categories = await allCategory(localStorage.getItem("uat"));
 
                 if (categories.data.isRetrieved) {
-                    setCategories(categories.data.category_datas);
+                    setCategories(categories.data.categoryDatas);
                 }
 
                 if (categories.status !== 200) {
@@ -67,7 +67,7 @@ function AddBookmarkForm() {
                 <h3>bookmark add form</h3>
 
                 <form onSubmit={onSubmitHandler}>
-                    <input ref={title} type="text" placeholder="Title ?" onChange={(e) => setBookmarkInfos({ ...bookmarkInfos, title: e.target.value, picture_title: `${e.target.value}.webp` })} />
+                    <input ref={title} type="text" placeholder="Title ?" onChange={(e) => setBookmarkInfos({ ...bookmarkInfos, title: e.target.value, picture: `${e.target.value}.webp` })} />
 
                     <input id="link" type="text" placeholder="Link ?" onChange={(e) => setBookmarkInfos({ ...bookmarkInfos, link: e.target.value })} />
 

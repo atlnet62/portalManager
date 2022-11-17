@@ -136,7 +136,7 @@ function Profile({ myProfile }) {
 
                         <tr>
                             <td>Registered date :</td>
-                            <td>{myProfile.register_date ? myProfile.register_date : null}</td>
+                            <td>{myProfile.register_date ? (new Date(myProfile.register_date).toLocaleDateString()) : null}</td>
                         </tr>
 
                         <tr>

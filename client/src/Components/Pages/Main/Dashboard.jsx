@@ -1,17 +1,22 @@
 import { Fragment, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGear, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft, faArrowRight, faGear, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { allCategory } from "../../../services/API/category";
 import Card from "./Bookmark/Card";
 import Button from "../../UI/Elements/Button/Index";
 
-function Bookmarks({ myBookmarks, myProfile }) {
+function Dashboard({ myBookmarks, myProfile }) {
     
     const [toggleSearch, setToggleSearch] = useState(false);
     const [toggleCategory, setToggleCategory] = useState(false);
     const [filter, setFilter] = useState(-1);
     const [categories, setCategories] = useState(null);
+    const [message, setMessage] = useState(null);
+
+    // hook sliders
+    const [min, setMin] = useState(0);
+    const [max, setMax] = useState(14);
 
     const onChangeHandler = (e) => {
         setFilter(parseInt(e));
@@ -29,13 +34,32 @@ function Bookmarks({ myBookmarks, myProfile }) {
         }
     };
 
+    const handlePageDec = (e) => {
+        e.preventDefault();
+        setMin(prev => prev - 15);
+        setMax(prev => prev - 15);
+    
+    }
+    
+    const handlePageInc = (e) => {
+        e.preventDefault();
+        if (max === myBookmarks.length -1) {
+            setMin(0);
+            setMax(9);
+            return;
+        }
+        setMin(prev => prev + 15)
+        setMax(prev => prev + 15)
+    
+    }
+
     useEffect(() => {
         const allCategories = async () => {
             try {
                 const categories = await allCategory(localStorage.getItem("uat"));
-                setCategories(categories.data.category_datas);
+                setCategories(categories.data.categoryDatas);
             } catch (error) {
-                console.log(error);
+                setMessage("We have some connection problems with the database.");
             }
         };
         allCategories();
@@ -81,14 +105,20 @@ function Bookmarks({ myBookmarks, myProfile }) {
                 </section>
             )}
 
+            {message && (
+                <section className="popup">
+                    <p>{message}</p>
+                </section>
+            )}
+
             <section id="bookmark-list">
-                {myBookmarks.map((myBookmark) => {
+                {myBookmarks.map((myBookmark, index) => {
                     return (
                         <Fragment key={myBookmark.bookmark_id}>
                             {filter !== 0 ? (
                                 myBookmark.category_id === filter && filter > 0 ? (
                                     <Card bookmark={myBookmark} myProfile={myProfile} />
-                                ) : (
+                                ) : (index >= min && index <= max) && (
                                     filter === -1 && <Card bookmark={myBookmark} myProfile={myProfile} />
                                 )
                             ) : myBookmark.category_id === null ? (
@@ -98,8 +128,22 @@ function Bookmarks({ myBookmarks, myProfile }) {
                     );
                 })}
             </section>
+
+            {
+                (myBookmarks.length > 15 && filter === -1) &&
+                    <section className="btn-manager">
+                        {
+                            min > 0 && 
+                                <Button className="btn" onClickHandler={(e) => handlePageDec(e)}><FontAwesomeIcon icon={faArrowLeft} /></Button>
+                        }
+                        {
+                            max < myBookmarks.length && 
+                                <Button className="btn" onClickHandler={(e) => handlePageInc(e)}><FontAwesomeIcon icon={faArrowRight} /></Button>
+                        }
+                    </section>
+            }
         </main>
     );
 }
 
-export default Bookmarks;
+export default Dashboard;

@@ -72,6 +72,7 @@ function Detail() {
             try {
                 const userInfos = await selectUser(localStorage.getItem("uat"), uuid);
                 setUserInfos(userInfos.data.userDatas);
+                
             } catch (error) {
                 setMessage("We have some connection problems with the database.");
             }
@@ -79,7 +80,7 @@ function Detail() {
         getUser();
         // eslint-disable-next-line
     }, []);
-
+    
     return (
         <main id="user-detail">
             {message && (
@@ -116,7 +117,8 @@ function Detail() {
 
                         <tr>
                             <td>Registered date :</td>
-                            <td>{userInfos.register_date ? userInfos.register_date : null}</td>
+
+                            <td>{userInfos.register_date ? (new Date(userInfos.register_date).toLocaleDateString()) : null}</td>
                         </tr>
 
                         <tr>

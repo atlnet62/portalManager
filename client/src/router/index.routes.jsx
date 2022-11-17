@@ -4,6 +4,7 @@ import HOC from "../helpers/HOC";
 // without login
 import Home from "../Components/Pages/Home";
 import Contact from "../Components/Pages/Contact";
+import Error from "../Components/Pages/Error";
 
 
 // Main Management
@@ -45,6 +46,11 @@ function Router() {
                 <Route path="user/detail/:uuid" element={<HOC child={UserDetail} isAuthRequired={true} />} />
                 <Route path="user/detail/:uuid/reset_password" element={<HOC child={ResetPasswordFormAdmin} isAuthRequired={true} />} />
             </Route>
+
+            <Route
+                path="*"
+                element={<Error message={"404 : Page not found !"} />}
+            />
         </Routes>
     );
 }

@@ -61,7 +61,7 @@ function HOC({ child, isAuthRequired }) {
                     setFetchError(true);
                     return;
                 }
-                dispatch(loadBookmarks(response.data.bookmark_datas));
+                dispatch(loadBookmarks(response.data.bookmarkDatas));
             }
             fetchData();
         }

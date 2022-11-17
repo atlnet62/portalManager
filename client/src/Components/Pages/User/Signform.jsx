@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { validate } from "../../../helpers/sanitize";
 import { signup, signin } from "../../../services/API/user.js";
+import { setCookie } from "../../../services/API/cookie";
 import logo from "./../../../assets/images/logo.svg";
 import { Link } from "react-router-dom";
 
@@ -39,6 +40,11 @@ function Signform({ formType }) {
                     localStorage.setItem("uat", response.data.token);
                 } catch (error) {
                     setMessage("We have some connection problems with the database.");
+                }
+                try {
+                    await setCookie(localStorage.getItem("uat"));
+                } catch (error) {
+                    setMessage("We have some problems with the cookie");
                 }
                 navigate("/main");
             } else {

@@ -17,17 +17,22 @@ function Card({ bookmark, myProfile }) {
     message && console.log(message);
 
     return (
-        myProfile.uuid && (
-            <article className="Card">
-                {/* Prise en compte du clic molette et des clic droite gauche */}
-                <a onClick={() => upCounter(bookmark.bookmark_id)} onMouseDown={(e) => upCounter(bookmark.bookmark_id)} href={`${bookmark.link}`}>
-                    <abbr title={`${bookmark.click_counter} clics`}>
-                        <img src={`/datas/${myProfile.uuid}/cache/${bookmark.picture_title}`} alt={bookmark.title} />
-                        <p>{bookmark.title}</p>
-                    </abbr>
-                </a>
+        message ?
+            <article className="popup">
+                <p>{message}</p>
             </article>
-        )
+        :
+            myProfile.uuid && (
+                <article className="Card">
+                    {/* Prise en compte du clic molette et des clic droite gauche */}
+                    <a onClick={() => upCounter(bookmark.bookmark_id)} onMouseDown={(e) => upCounter(bookmark.bookmark_id)} href={`${bookmark.link}`}>
+                        <abbr title={`${bookmark.click_counter} clics`}>
+                            <img src={`/datas/${myProfile.uuid}/cache/${bookmark.picture_title}`} alt={bookmark.title} />
+                            <p>{bookmark.title}</p>
+                        </abbr>
+                    </a>
+                </article>
+            )
     );
 }
 

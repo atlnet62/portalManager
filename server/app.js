@@ -7,6 +7,7 @@ import { PORT } from "./config/index.js";
 import router from "./router/index.routes.js";
 
 import { errorHandler } from "./errors/errHandler.js";
+import parserCookies from "cookie-parser";
 
 const app = express();
 
@@ -18,8 +19,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(fileUpload({ createParentPath: true }));
 
+app.use(parserCookies());
+
 app.use(router);
 app.use(errorHandler);
+
 
 /**********
  **    app.get("*", (request, response) => {

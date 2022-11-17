@@ -1,6 +1,6 @@
 import { Outlet, useLocation } from "react-router-dom";
 import HOC from "../../../helpers/HOC";
-import MainPanel from "./Panel";
+import Dashboard from "./Dashboard";
 
 function Main() {
     const location = useLocation;
@@ -8,7 +8,7 @@ function Main() {
         <Outlet />
     ) : (
         <>
-            <HOC child={MainPanel} />
+            <HOC child={Dashboard} />
         </>
     );
 }

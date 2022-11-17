@@ -12,6 +12,10 @@ function UserList() {
     const [message, setMessage] = useState(null);
     const [nbUsers, setNbUsers] = useState(0);
 
+        // hook sliders
+        const [min, setMin] = useState(0);
+        const [max, setMax] = useState(9);
+
     let count = -1;
 
     const clickRemove = async (e, uuid) => {
@@ -29,6 +33,30 @@ function UserList() {
             setMessage("We have some connection problems with the database.");
         }
     };
+
+    const handlePageDec = (e) => {
+        e.preventDefault();
+        if (min === 0) {
+            setMin(users.length -10);
+            setMax(users.length -1);
+            return;
+        }
+        setMin(prev => prev - 10);
+        setMax(prev => prev - 10);
+    
+    }
+    
+    const handlePageInc = (e) => {
+        e.preventDefault();
+        if (max === users.length -1) {
+            setMin(0);
+            setMax(9);
+            return;
+        }
+        setMin(prev => prev + 10)
+        setMax(prev => prev + 10)
+    
+    }
 
     useEffect(() => {
         const getUsers = async () => {
@@ -68,9 +96,9 @@ function UserList() {
                         {users.length < 0 ? (
                             <Loading />
                         ) : (
-                            users.map((user) => {
+                            users.map((user, index) => {
                                 count++;
-                                return (
+                                return (index >= min && index <= max) && (
                                     <Fragment key={count}>
                                         <tr>
                                             <td>{count}</td>
@@ -92,9 +120,13 @@ function UserList() {
                         )}
                     </tbody>
                     <tfoot>
-                        <tr>
-                            <td colSpan="6">Pagination</td>
-                        </tr>
+                        {
+                            users.length > 10 &&
+                            <tr>
+                                <td colSpan="3"><Button className="btn" onClickHandler={(e) => handlePageDec(e)}>Previous</Button></td>
+                                <td colSpan="3"><Button className="btn" onClickHandler={(e) => handlePageInc(e)}>Next</Button></td>
+                            </tr>
+                        }
                         <tr>
                             <td colSpan="6">Total {nbUsers} users</td>
                         </tr>

@@ -1,23 +1,12 @@
 import express from "express";
-import {
-    addRole,
-    allRole,
-    removeRole,
-    updateRole,
-} from "../controllers/role.js";
+import { allRole } from "../controllers/role.js";
 
 import { auth } from "../middlewares/auth.js";
+import { sanitize } from "../middlewares/sanitize.js";
+import { isUser } from "../middlewares/role.js";
 
 const router = express.Router();
-/**
- * Create or login routes
- */
+router.get("/all", auth, sanitize, isUser, allRole);
 
-router.post("/add", addRole);
-router.delete("/remove/:roleID", removeRole);
-
-router.get("/all", auth, allRole);
-
-router.patch("/update/:roleID", updateRole);
 
 export default router;

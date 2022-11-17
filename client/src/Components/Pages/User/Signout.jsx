@@ -6,15 +6,16 @@ import { signout } from "../../../store/slices/user.slice";
 function SignOut() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-
+    
     useEffect(() => {
-        // refecto en tablea en fin de projet
         localStorage.removeItem("uat");
-
         dispatch(signout());
         navigate("/user");
+        window.location.reload(false);
+        // eslint-disable-next-line
     }, []);
-
+    
+    
     return null;
 }
 
