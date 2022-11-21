@@ -1,20 +1,17 @@
 import Model from "../models/model.js";
 
-const charStandard = /[><()[\]{}/'"&~#|`\\^@°=+*¨^$£µ%§,?;:!£¤-]/g;
-const charLogin = /[><()[\]{}/\\'"]/g;
-const charNumber = /[0-9]/g;
-
 /**
  * Verified if category exist
  */
-const checkCategory = async (request, response, next, searchValue, column, table, searchKey) => {
+const checkCategory = async (request, response, next, searchValue1, searchValue2, column, table, searchKey1, searchKey2) => {
     const datas = {
-        key: searchValue,
-        query: `SELECT ${column} FROM ${table} WHERE ${searchKey} = ?`,
+        key1: searchValue1,
+        key2: searchValue2,
+        query: `SELECT ${column} FROM ${table} WHERE ${searchKey1} = ? AND ${searchKey2} = ?`,
     };
 
     try {
-        const result = await Model.getDataByKey(datas);
+        const result = await Model.getDataByKeys(datas);
         return result[0];
     } catch (error) {
         return next(error);
@@ -40,14 +37,16 @@ export const addCategory = async (request, response, next) => {
         });
 
     } catch (error) {
+        if (process.env.npm_lifecycle_event === "start") {
+            error = "We have some connection problems with the database.";
+        }
         return next(error);
     }
 };
 
 export const removeCategory = async (request, response, next) => {
-    const {categoryID} = request.params;
-
-    const checkDatas = await checkCategory(request, response, next, categoryID, "id", "category", "id");
+    const {categoryID, uuid} = request.params;
+    const checkDatas = await checkCategory(request, response, next, categoryID, uuid, "id", "category", "id", "user_uuid");
 
     if (!checkDatas) {
         const error = {
@@ -59,7 +58,6 @@ export const removeCategory = async (request, response, next) => {
 
     const categoryDatas = {
         key: categoryID,
-        // Modified to delete dates user inside multitable
         query: "DELETE FROM category WHERE id = ?",
     };
 
@@ -69,6 +67,9 @@ export const removeCategory = async (request, response, next) => {
             isRemoved: true,
         });
     } catch (error) {
+        if (process.env.npm_lifecycle_event === "start") {
+            error = "We have some connection problems with the database.";
+        }
         return next(error);
     }
 };
@@ -99,19 +100,18 @@ export const allCategory = async (request, response, next) => {
         });
         return;
     } catch (error) {
+        if (process.env.npm_lifecycle_event === "start") {
+            error = "We have some connection problems with the database.";
+        }
         return next(error);
     }
 };
 
 export const updateCategory = async (request, response, next) => {
     const { title } = request.body;
-    const { categoryID } = request.params;
+    const { categoryID, uuid } = request.params;
 
-    const table = "category";
-    const column = "id";
-    const searchKey = "id";
-
-    const checkDatas = await checkCategory(request, response, next, categoryID, column, table, searchKey);
+    const checkDatas = await checkCategory(request, response, next, categoryID, uuid, "id", "category", "id", "user_uuid");
 
     if (!checkDatas) {
         const error = {
@@ -136,6 +136,9 @@ export const updateCategory = async (request, response, next) => {
         });
         
     } catch (error) {
+        if (process.env.npm_lifecycle_event === "start") {
+            error = "We have some connection problems with the database.";
+        }
         return next(error);
     }
 };

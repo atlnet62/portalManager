@@ -1,8 +1,8 @@
 export const sanitize = (request, response, next) => {
     // charcter must be not present in string
     const charForStandard = /[><()[\]{}/'"&~#|`\\^@°=+*¨^$£µ%§,?;:!£¤-]/g;
-    const charForHttp = /[><()[\]{}\\'"]/g;
-    const charForLoginAndPicture = /[><()[\]{}/\\'"]/g;
+    const charForHttp = /[><()[ \]{}\\'"]/g;
+    const charForLoginAndPicture = /[><() [\]{}/\\'"]/g;
 
     // categoryID come from params
     // category_id come from body
@@ -80,10 +80,18 @@ export const sanitize = (request, response, next) => {
         }
     }
 
-    if (uuid?.length > 255 || userUUID?.length > 255 || title?.length > 60 || picture?.length > 60 || email?.length > 255 || alias?.length > 60 || avatar?.length > 60 || password?.length > 100) {
+    if (uuid?.length > 255 || userUUID?.length > 255 || title?.length > 60 || picture?.length > 60 || email?.length > 255 || alias?.length > 60 || avatar?.length > 60 || password?.length > 32) {
         const error = {
             code: 400,
-            message: "The character limit is out. please could you verify each field. (uuid, email : 255 max, title, avatar & alias : 60 max, password : 100 max).",
+            message: "The character limit is out max. please could you verify each field. (uuid, email : 255 max, title, avatar & alias : 60 max, password : 32 max).",
+        };
+        return next(error);
+    }
+
+    if (uuid?.length < 4 || userUUID?.length < 4 || title?.length < 3 || picture?.length < 4 || email?.length < 3 || alias?.length < 3 || avatar?.length < 3 || password?.length < 8) {
+        const error = {
+            code: 400,
+            message: "The character limit is out min. please could you verify each field. (uuid : 4 min, email , title, avatar & alias : 3 min, password : 8 min).",
         };
         return next(error);
     }
@@ -98,7 +106,23 @@ export const sanitize = (request, response, next) => {
     ) {
         const error = {
             code: 400,
-            message: "The character limit is out. please could you verify each field. (id : 11 max, role, reset, validation : 1 max)",
+            message: "The character limit is out max. please could you verify each field. (id : 11 max, role, reset, validation : 1 max)",
+        };
+        return next(error);
+    }
+
+    if (
+        categoryID?.length < 1 ||
+        category_id?.length < 1 ||
+        bookmarkID?.length < 1 ||
+        click_counter?.length < 1 ||
+        role_id?.length < 1 ||
+        validation_account?.length < 1 ||
+        reset_password?.length < 1
+    ) {
+        const error = {
+            code: 400,
+            message: "The character limit is out min. please could you verify each field. (id : 1 min, role, reset, validation : 1 min)",
         };
         return next(error);
     }

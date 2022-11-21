@@ -13,12 +13,13 @@ const pool = mysql.createPool({
     queueLimit: 0,
 });
 
+/* debug session */
 pool.getConnection()
     .then((response) => {
         console.log(`Connected to ${response.config.database}`);
     })
     .catch((error) => {
-        console.log("ERROR --->", error);
+        console.log(error);
     });
 
 export default pool;

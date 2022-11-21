@@ -20,6 +20,9 @@ export const allRole = async (request, response, next) => {
         });
         return;
     } catch (error) {
+        if (process.env.npm_lifecycle_event === "start") {
+            error = "We have some connection problems with the database.";
+        }
         return next(error);
     }
 };

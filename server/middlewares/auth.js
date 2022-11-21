@@ -16,6 +16,7 @@ export const auth = (request, response, next) => {
             } else {
                 request.params.uuid = decoded.uuid;
                 request.params.role_id = decoded.role_id;
+                request.params.validation_account = decoded.validation_account;
                 next();
             }
         });

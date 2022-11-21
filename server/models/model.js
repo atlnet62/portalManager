@@ -16,6 +16,11 @@ class Model {
         return result;
     }
 
+    static async removeDataByKeys({ query, key1, key2 }) {
+        const [result] = await pool.execute(query, [key1, key2]);
+        return result;
+    }
+
     static async removeDataByKey({ query, key }) {
         const [result] = await pool.execute(query, [key]);
         return result;

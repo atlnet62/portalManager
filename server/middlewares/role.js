@@ -1,5 +1,5 @@
 export const isAdmin = (request, response, next) => {
-    if (request.params.role_id === 3) {
+    if (request.params.role_id === 3 && request.params.validation_account === 1) {
         next();
     } else {
         response.status(308).json({
@@ -9,7 +9,7 @@ export const isAdmin = (request, response, next) => {
 };
 
 export const isUser = (request, response, next) => {
-    if (request.params.role_id === 3 || request.params.role_id === 2 || request.params.role_id === 1) {
+    if ((request.params.role_id === 3 || request.params.role_id === 2 || request.params.role_id === 1) && request.params.validation_account === 1) {
         next();
     } else {
         response.status(308).json({

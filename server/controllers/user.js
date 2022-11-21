@@ -3,10 +3,9 @@ import { v4 as uuidv4 } from "uuid";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import fs from "fs";
+import mailing from '../config/mailing.js';
+import { TOKEN_SECRET} from "../config/index.js";
 
-// import mailing from '../config/mailing.js';
-
-const { TOKEN_SECRET } = process.env;
 const saltRounds = 10;
 
 /**
@@ -22,6 +21,9 @@ const checkUser = async (request, response, next, searchValue, column, table, se
         const result = await Model.getDataByKey(datas);
         return result[0];
     } catch (error) {
+        if (process.env.npm_lifecycle_event === "start") {
+            error = "We have some connection problems with the database.";
+        }
         return next(error);
     }
 };
@@ -67,6 +69,9 @@ export const updateUser = async (request, response, next) => {
             isModified: true,
         });
     } catch (error) {
+        if (process.env.npm_lifecycle_event === "start") {
+            error = "We have some connection problems with the database.";
+        }
         return next(error);
     }
 };
@@ -116,6 +121,9 @@ export const removeUser = async (request, response, next) => {
             isRemoved: true,
         });
     } catch (error) {
+        if (process.env.npm_lifecycle_event === "start") {
+            error = "We have some connection problems with the database.";
+        }
         return next(error);
     }
 };
@@ -154,10 +162,16 @@ export const resetPassword = async (request, response, next) => {
                     isModified: true,
                 });
             } catch (error) {
+                if (process.env.npm_lifecycle_event === "start") {
+                    error = "We have some connection problems with the database.";
+                }
                 return next(error);
             }
         });
     } catch (error) {
+        if (process.env.npm_lifecycle_event === "start") {
+            error = "We have some connection problems with the database.";
+        }
         return next(error);
     }
 };
@@ -186,6 +200,9 @@ export const addUser = async (request, response, next) => {
         if (error) {
             fs.mkdir(path, { recursive: true }, (error) => {
                 if (error) {
+                    if (process.env.npm_lifecycle_event === "start") {
+                        error = "We have some connection problems with the database.";
+                    }
                     return next(error);
                 }
             });
@@ -206,6 +223,8 @@ export const addUser = async (request, response, next) => {
 
             try {
                 await Model.saveData(query, userDatas);
+
+                mailing(email, "Account Validation", "Welcome on Portal Manager", "Please, Could you click on the button bellow : ", uuidCreated);
 
                 response.status(200).json({
                     tempPassword: password, // envoie un mail avec le password
@@ -235,7 +254,7 @@ export const selectUser = async (request, response, next) => {
 
     const datas = {
         key: uuid,
-        query: "SELECT user.id AS userID, uuid, email, reset_password, alias, validation_account, register_date, avatar, role.id AS role_id, role.title AS userRole FROM user JOIN role ON role_id = role.id WHERE uuid = ?",
+        query: "SELECT user.id AS userID, uuid, email, reset_password, alias, validation_account, register_date, avatar, role.id AS role_id, role.title AS user_role FROM user JOIN role ON role_id = role.id WHERE uuid = ?",
     };
 
     try {
@@ -255,6 +274,9 @@ export const selectUser = async (request, response, next) => {
         });
         return;
     } catch (error) {
+        if (process.env.npm_lifecycle_event === "start") {
+            error = "We have some connection problems with the database.";
+        }
         return next(error);
     }
 };
@@ -285,6 +307,9 @@ export const allUser = async (request, response, next) => {
         });
         return;
     } catch (error) {
+        if (process.env.npm_lifecycle_event === "start") {
+            error = "We have some connection problems with the database.";
+        }
         return next(error);
     }
 };
@@ -297,7 +322,7 @@ export const signin = async (request, response, next) => {
     const { email, password } = request.body;
     const userDatas = {
         key: email,
-        query: "SELECT * FROM user WHERE email = ?",
+        query: "SELECT uuid, email, password, reset_password, alias, role_id, validation_account, register_date, avatar FROM user WHERE email = ?",
     };
 
     try {
@@ -310,13 +335,16 @@ export const signin = async (request, response, next) => {
             });
             return;
         }
-        const TOKEN = jwt.sign({ uuid: result[0].uuid, role_id: result[0].role_id }, TOKEN_SECRET);
+        const TOKEN = jwt.sign({ uuid: result[0].uuid, role_id: result[0].role_id, validation_account: result[0].validation_account }, TOKEN_SECRET, { expiresIn: "1h" });
 
         response.status(200).json({
             token: TOKEN,
             isLogged: true,
         });
     } catch (error) {
+        if (process.env.npm_lifecycle_event === "start") {
+            error = "We have some connection problems with the database.";
+        }
         return next(error);
     }
 };
@@ -346,6 +374,9 @@ export const signup = async (request, response, next) => {
             if (error) {
                 fs.mkdir(path, { recursive: true }, (error) => {
                     if (error) {
+                        if (process.env.npm_lifecycle_event === "start") {
+                            error = "We have some connection problems with the database.";
+                        }
                         return next(error);
                     }
                 });
@@ -365,22 +396,51 @@ export const signup = async (request, response, next) => {
             try {
                 await Model.saveData(query, userDatas);
 
-                //mailing(email, "Account Validation", "Welcome on board", "Please, Could you click on the button bellow : ", dataUser.uuid);
+                mailing(email, "Account Validation", "Welcome on Portal Manager", "Please, Could you click on the button bellow : ", uuidCreated);
 
                 response.status(200).json({
                     isCreated: true,
                 });
             } catch (error) {
+                if (process.env.npm_lifecycle_event === "start") {
+                    error = "We have some connection problems with the database.";
+                }
                 return next(error);
             }
+        });
+    } catch (error) {
+        if (process.env.npm_lifecycle_event === "start") {
+            error = "We have some connection problems with the database.";
+        }
+        return next(error);
+    }
+};
+
+export const refreshToken = async (request, response, next) => {
+    const { uuid, role_id } = request.body;
+    if (uuid || role_id) {
+        const TOKEN = jwt.sign({ uuid: uuid, role_id: role_id }, TOKEN_SECRET);
+        return TOKEN;
+    } else {
+        return next("Refresh isn't possible.");
+    }
+};
+
+export const updateValidatedEmail = async (request, response, next) => {
+    const { uuid } = request.params;
+
+    const datas = {
+        uuid: uuid,
+    };
+
+    const query = "UPDATE user SET validation_account = 1 WHERE uuid = ?";
+
+    try {
+        await Model.saveData(query, datas);
+        response.status(200).json({
+            message: "Congratulations, your account is validated.",
         });
     } catch (error) {
         return next(error);
     }
 };
-
-export const setCookies = (request, response, next) => {
-    const TOKEN = request.headers["x-access-token"];
-    console.log(request.headers);
-    response.cookie("uat", TOKEN, {expire: 15552000});
-}

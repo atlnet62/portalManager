@@ -23,19 +23,23 @@ import fs from "fs";
 
 
 /**
- * function to verify if bookmarks exist before add/select/remove/update
+ * function to verify if bookmarks exist before remove/update
  */
 
-const checkBookmark = async (request, response, next, searchValue, column, table, searchKey) => {
+const checkBookmark = async (request, response, next, searchValue1, searchValue2, column, table, searchKey1, searchKey2) => {
     const datas = {
-        key: searchValue,
-        query: `SELECT ${column} FROM ${table} WHERE ${searchKey} = ?`,
+        key1: searchValue1,
+        key2: searchValue2,
+        query: `SELECT ${column} FROM ${table} WHERE ${searchKey1} = ? AND ${searchKey2} = ?`,
     };
 
     try {
-        const datasResponse = await Model.getDataByKey(datas);
+        const datasResponse = await Model.getDataByKeys(datas);
         return datasResponse[0];
     } catch (error) {
+        if (process.env.npm_lifecycle_event === "start") {
+            error = "We have some connection problems with the database.";
+        }
         return next(error);
     }
 };
@@ -90,6 +94,9 @@ export const addBookmark = async (request, response, next) => {
         }
 
     } catch (error) {
+        if (process.env.npm_lifecycle_event === "start") {
+            error = "We have some connection problems with the database.";
+        }
         return next(error);
     }
 };
@@ -119,6 +126,9 @@ export const allBookmark = async (request, response, next) => {
         });
         return;
     } catch (error) {
+        if (process.env.npm_lifecycle_event === "start") {
+            error = "We have some connection problems with the database.";
+        }
         return next(error);
     }
 };
@@ -127,7 +137,7 @@ export const removeBookmark = async (request, response, next) => {
     const { bookmarkID } = request.params;
     const { uuid } = request.params;
 
-    const checkDatas = await checkBookmark(request, response, next, bookmarkID, "id", "bookmark", "id");
+    const checkDatas = await checkBookmark(request, response, next, bookmarkID, uuid, "bookmark_id", "bookmark_category_link", "bookmark_id", "user_uuid");
 
     if (!checkDatas) {
         const error = {
@@ -164,6 +174,10 @@ export const removeBookmark = async (request, response, next) => {
             isRemoved: true,
         });
     } catch (error) {
+        // detail for development mode and general msg for prod.
+        if (process.env.npm_lifecycle_event === "start") {
+            error = "We have some connection problems with the database.";
+        }
         return next(error);
     }
 };
@@ -210,13 +224,26 @@ export const updateCounter = async (request, response, next) => {
 
         return;
     } catch (error) {
+        if (process.env.npm_lifecycle_event === "start") {
+            error = "We have some connection problems with the database.";
+        }
         return next(error);
     }
 };
 
 export const updateBookmark = async (request, response, next) => {
-    const { bookmarkID } = request.params;
+    const { bookmarkID, uuid } = request.params;
     const { title, link, click_counter, category_id } = request.body;
+
+    const checkDatas = await checkBookmark(request, response, next, bookmarkID, uuid, "bookmark_id", "bookmark_category_link", "bookmark_id", "user_uuid");
+
+    if (!checkDatas) {
+        const error = {
+            code: 404,
+            message: "Bookmark doesn't exist !",
+        };
+        return next(error);
+    }
 
     const bookmarkDatas = {
         title: title,
@@ -241,6 +268,9 @@ export const updateBookmark = async (request, response, next) => {
             isModified: true,
         });
     } catch (error) {
+        if (process.env.npm_lifecycle_event === "start") {
+            error = "We have some connection problems with the database.";
+        }
         return next(error);
     }
 };
