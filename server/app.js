@@ -6,7 +6,7 @@ import "dotenv/config";
 import { PORT } from "./config/index.js";
 import router from "./router/index.routes.js";
 import { errorHandler } from "./errors/errHandler.js";
-console.log(process.env.npm_lifecycle_event);
+
 
 const app = express();
 

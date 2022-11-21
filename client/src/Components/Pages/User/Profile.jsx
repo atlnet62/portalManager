@@ -109,7 +109,7 @@ function Profile({ myProfile }) {
                 </section>
             )}
 
-            <section>
+            <section className="profile">
                 <h3>Profile</h3>
                 <table>
                     <thead>
@@ -139,7 +139,7 @@ function Profile({ myProfile }) {
 
                         <tr>
                             <td>Alias :</td>
-                            <td>{!edit ? myInfos.alias : <input value={!myInfos.alias ? "new Comer" : myInfos.alias} onChange={(e) => setMyInfos({ ...myInfos, alias: e.target.value })} />}</td>
+                            <td>{!edit ? myInfos.alias : <input type="text" value={!myInfos.alias ? "new Comer" : myInfos.alias} onChange={(e) => setMyInfos({ ...myInfos, alias: e.target.value })} />}</td>
                             <td>
                                 <Button className={!edit ? "btn-edit" : "btn-valid"} onClickHandler={(e) => ChangeAlias(e)}>
                                     {edit ? <FontAwesomeIcon icon={faCheck} /> : <FontAwesomeIcon icon={faPen} />}

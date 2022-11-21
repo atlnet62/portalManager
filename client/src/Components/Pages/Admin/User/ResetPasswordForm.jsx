@@ -33,18 +33,18 @@ function ResetForm() {
     }, []);
 
     return (
-        <main className="reset-pwd">
+        <main id="reset-pwd">
             {message && (
                 <section className="popup">
                     <p>{message}</p>
                 </section>
             )}
 
-            <section>
+            <section className="reset-pwd">
                 <h3>Reset Passaword</h3>
                 <form onSubmit={onSubmitHandler}>
-                    <input ref={password} className="password" type="password" placeholder="New password ?" onChange={(e) => setPassInfos({ ...passInfos, password: e.target.value })} />
-                    <input className="password" type="password" placeholder="Repeat new password ?" onChange={(e) => setPassInfos({ ...passInfos, passwordVerified: e.target.value })} />
+                    <input ref={password} type="password" placeholder="New password ?" onChange={(e) => setPassInfos({ ...passInfos, password: e.target.value })} />
+                    <input type="password" placeholder="Repeat new password ?" onChange={(e) => setPassInfos({ ...passInfos, passwordVerified: e.target.value })} />
                     <input type="submit" value="Send" />
                 </form>
             </section>

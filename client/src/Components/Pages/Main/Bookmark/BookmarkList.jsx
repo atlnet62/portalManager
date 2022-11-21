@@ -168,9 +168,9 @@ function BookmarkList() {
                             <th>#</th>
                             <th>Name</th>
                             <th>Link</th>
-                            <th>Category</th>
-                            <th>Trending</th>
-                            <th colSpan="2">Actions</th>
+                            <th>Cat.</th>
+                            <th>Pop.</th>
+                            <th colSpan={2}>Actions</th>
                         </tr>
                     </thead>
 
@@ -220,9 +220,8 @@ function BookmarkList() {
                                                 {edit && editId === bookmark.bookmark_id ? (
                                                     <input
                                                         type="number"
-                                                        value={bookmarkInfos.click_counter}
-                                                        onChange={(e) => setBookmarkInfos({ ...bookmarkInfos, click_counter: parseInt(e.target.value) })}
-                                                    />
+                                                        value={isNaN(bookmarkInfos.click_counter) ? 0 : bookmarkInfos.click_counter}
+                                                        onChange={(e) => setBookmarkInfos({ ...bookmarkInfos, click_counter: isNaN(e.target.value) ? 0 : parseInt(e.target.value) })} />
                                                 ) : (
                                                     bookmark.click_counter
                                                 )}
@@ -233,12 +232,22 @@ function BookmarkList() {
                                                     onClickHandler={(e) => {
                                                         clickEdit(e, edit, bookmark);
                                                     }}>
-                                                    {edit && editId === bookmark.bookmark_id ? <FontAwesomeIcon icon={faCheck} /> : <FontAwesomeIcon icon={faPen} />}
+                                                    {edit && editId === bookmark.bookmark_id ? (
+                                                        <abbr title="valid">
+                                                            <FontAwesomeIcon icon={faCheck} />
+                                                        </abbr>
+                                                    ) : (
+                                                        <abbr title="modify">
+                                                            <FontAwesomeIcon icon={faPen} />
+                                                        </abbr>
+                                                    )}
                                                 </Button>
                                             </td>
                                             <td>
                                                 <Button isDisabled={edit && true} className="btn-del" onClickHandler={(e) => clickRemove(e, bookmark.bookmark_id)}>
-                                                    <FontAwesomeIcon icon={faXmark} />
+                                                    <abbr title="remove">
+                                                        <FontAwesomeIcon icon={faXmark} />
+                                                    </abbr>
                                                 </Button>
                                             </td>
                                         </tr>
@@ -251,14 +260,14 @@ function BookmarkList() {
                         <tfoot>
                             <tr>
                                 {min > 0 && (
-                                    <td>
+                                    <td colSpan={7}>
                                         <Button className="btn" onClickHandler={(e) => handlePageDec(e)}>
                                             <FontAwesomeIcon icon={faArrowLeft} />
                                         </Button>
                                     </td>
                                 )}
                                 {max < bookmarks.length && (
-                                    <td>
+                                    <td colSpan={7}>
                                         <Button className="btn" onClickHandler={(e) => handlePageInc(e)}>
                                             <FontAwesomeIcon icon={faArrowRight} />
                                         </Button>

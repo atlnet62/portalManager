@@ -45,7 +45,7 @@ function Header() {
                         </button>
                     </abbr>
                 )}
-                <h1>PORTAL MANAGER</h1>
+                <h1>PORTAL MANAGER<aside>designed by</aside></h1>
                 <nav className={`${widthScreen < 3840 ? (isActive ? "menu-display" : "menu-off") : "menu-display"}`} onClick={handleClick}>
                     <Link to="/home">
                         <FontAwesomeIcon icon={faHouseChimney} />

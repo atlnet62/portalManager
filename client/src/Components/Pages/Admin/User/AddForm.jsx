@@ -50,10 +50,10 @@ function AddUserForm() {
                 </section>
             )}
 
-            <section id="add-user">
+            <section className="add-user">
                 <h3>Add User Form</h3>
                 <form onSubmit={onSubmitHandler}>
-                    <input ref={email} className="email" type="email" placeholder="E-mail ?" onChange={(e) => setUserInfos({ ...userInfos, email: e.target.value })} />
+                    <input ref={email} type="email" placeholder="E-mail ?" onChange={(e) => setUserInfos({ ...userInfos, email: e.target.value })} />
                     <input type="submit" value="Send" />
                 </form>
             </section>

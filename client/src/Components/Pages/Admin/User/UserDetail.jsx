@@ -109,7 +109,7 @@ function Detail() {
                 </section>
             )}
 
-            <section>
+            <section className="user-detail">
                 <h3>User detail</h3>
                 <table>
                     <thead>
@@ -166,7 +166,7 @@ function Detail() {
                             </td>
                             <td>
                                 <Button className="btn-edit" onClickHandler={(e) => setUpdateRole(e)}>
-                                    <FontAwesomeIcon icon={faFloppyDisk} />
+                                    <abbr title="save"><FontAwesomeIcon icon={faFloppyDisk} /></abbr>
                                 </Button>
                             </td>
                         </tr>

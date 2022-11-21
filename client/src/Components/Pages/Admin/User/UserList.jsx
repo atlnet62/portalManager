@@ -81,7 +81,7 @@ function UserList() {
     }, []);
 
     return users ? (
-        <section id="user-list">
+        <section>
             {message && (
                 <article className="popup">
                     <p>{message}</p>
@@ -93,7 +93,7 @@ function UserList() {
                     <Loading />
                 </article>
             ) : (
-                <article>
+                <article className="user-list">
                     <h3>User list by email</h3>
                     <table>
                         <thead>

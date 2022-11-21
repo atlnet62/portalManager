@@ -41,10 +41,10 @@ function ValidateAccount() {
             )}
 
             {message === null && (
-                <section>
+                <section className="validator">
                     <p>Click on the button to validate the account.</p>
 
-                    <Button onClickHandler={(e) => validateAccountHandler(e)}>Valider votre compte</Button>
+                    <Button className="btn" onClickHandler={(e) => validateAccountHandler(e)}>Valider votre compte</Button>
                 </section>
             )}
         </main>

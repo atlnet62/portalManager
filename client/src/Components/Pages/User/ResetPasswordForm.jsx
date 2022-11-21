@@ -42,25 +42,20 @@ function ResetForm({ myProfile }) {
     }, []);
 
     return (
-        <main className="reset-pwd">
+        <main id="reset-pwd">
             {message && (
                 <section className="popup">
                     <p>{message}</p>
                 </section>
             )}
 
-            <section>
+            <section className="reset-pwd">
                 <h3>Reset Passaword</h3>
                 <form onSubmit={onSubmitHandler}>
-                    <input ref={password} className="password" type="password" id="password" placeholder="New password ?" onChange={(e) => setPassInfos({ ...passInfos, password: e.target.value })} />
+                    <input ref={password} type="password" id="password" placeholder="New password ?" onChange={(e) => setPassInfos({ ...passInfos, password: e.target.value })} />
 
-                    <input
-                        className="password"
-                        type="password"
-                        id="passwordVerified"
-                        placeholder="Repeat new password ?"
-                        onChange={(e) => setPassInfos({ ...passInfos, passwordVerified: e.target.value })}
-                    />
+                    <input type="password" id="passwordVerified" placeholder="Repeat new password ?" onChange={(e) => setPassInfos({ ...passInfos, passwordVerified: e.target.value })} />
+
                     <input type="submit" value="Send" />
                 </form>
             </section>
@@ -68,7 +63,9 @@ function ResetForm({ myProfile }) {
             <div className="divider"></div>
 
             <section className="btn-manager">
-                <Link className="btn" to="/user/profile">Previous</Link>
+                <Link className="btn" to="/user/profile">
+                    Previous
+                </Link>
             </section>
         </main>
     );

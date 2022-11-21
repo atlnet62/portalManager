@@ -1,3 +1,5 @@
+/* CSS Validated by W3C */
+/* Device screen : mini 300px */
 /* INIT THE CSS */
 * {
     margin: 0;
@@ -15,7 +17,7 @@ html {
 body {
     color: #202020;
     background: url("./assets/images/bcg.jpg") repeat;
-    font-size: 1.6rem;
+    font-size: 1.1rem;
 }
 
 body,
@@ -51,6 +53,10 @@ header h1 {
     font-size: 2.5rem;
     text-align: right;
     text-transform: uppercase;
+}
+
+header h1 aside {
+    display: none;
 }
 
 .rotate {
@@ -120,7 +126,7 @@ nav a:hover {
 /********************************************************/
 /* MAIN */
 
-/* GLOBAL MAIN SECTION */
+/* GENERAL MAIN */
 
 h2 {
     margin: 2rem;
@@ -134,7 +140,7 @@ h3::after {
 }
 
 #bookmarks,
-#profile,
+.profile,
 #panel {
     display: flex;
     flex-direction: column;
@@ -181,6 +187,10 @@ h3::after {
     color: #f0ffff;
     font-weight: bold;
     text-decoration: none;
+}
+
+.btn:hover {
+    background-color: #00380ccc;
 }
 
 .btn-edit,
@@ -233,7 +243,6 @@ h3::after {
 
 .email,
 .password {
-    margin: 1rem 0;
     padding: 0.5rem 2.25rem;
     background-size: 1rem;
     background-position: 0.5rem;
@@ -241,6 +250,22 @@ h3::after {
     border: 0.1rem solid #27262b;
     border-radius: 1.5rem;
     justify-content: center;
+}
+
+select,
+input {
+    width: 100%;
+    margin: 1rem 0;
+}
+
+input[type="text"],
+input[type="number"],
+select {
+    padding: 0.125rem;
+}
+
+input[type="number"] {
+    appearance: textfield;
 }
 
 input[type="submit"],
@@ -304,7 +329,8 @@ fieldset input {
 /* HOME & CONTACT SECTION */
 
 #home,
-#contact {
+#contact,
+#account-validator {
     width: 95%;
     margin: 10rem auto;
     padding: 1rem;
@@ -314,175 +340,196 @@ fieldset input {
 }
 
 #home p,
-#contact p {
+#contact p,
+#account-validator p {
     padding: 1rem;
     text-align: justify;
 }
 
 .dash-bookmark-list {
     width: 75%;
+    max-width: 100rem;
     margin: auto;
     display: flex;
     flex-direction: row;
     justify-content: center;
     flex-wrap: wrap;
-    max-width: 100rem;
 }
 
 .divider {
     margin: 5rem auto;
 }
 
-/* PROFILE SECTION */
+/***************************************************************/
 
-#profile section h3,
-#user-detail section h3 {
-    width: 30rem;
-    margin: 4rem auto 0;
-    padding: 1rem;
-    border-radius: 1rem 1rem 0 0;
+/* GLOBAL ADMIN, CATEGORY & BOOKMARK */
+
+.user-list table,
+.category-list table,
+.bookmark-list table,
+.profile table,
+.add-user form,
+.add-bookmark form,
+.add-category form,
+.reset-pwd form,
+.reset-pwd h3,
+.user-list h3,
+.category-list h3,
+.bookmark-list h3,
+.add-user h3,
+.add-bookmark h3,
+.add-category h3,
+.profile h3,
+.user-detail h3,
+.user-detail table {
     background-color: #202020af;
     color: #f0ffff;
+}
+
+table tbody tr td:nth-of-type(n) {
+    word-wrap: break-word;
+    padding: 0.5rem 0;
+}
+
+/* MANAGEMENT OF PROFILE DETAIL USERLIST CATEGORY-LIST BOOKMARK-LIST ADD */
+
+.profile h3,
+.profile table,
+.user-detail h3,
+.user-detail table {
+    width: 95%;
+    padding: 1rem;
+}
+
+.profile table tbody tr td {
+    padding: 1rem 0.5rem;
+}
+
+.profile table tbody tr td:nth-child(2),
+.profile table tbody tr td:nth-child(3) {
+    text-align: right;
+}
+
+.profile h3,
+.user-detail h3 {
+    margin: 5rem auto 0;
     text-align: center;
     text-transform: uppercase;
 }
 
-#profile section table,
-#user-detail section table {
-    width: 30rem;
-    margin: 0 auto 4rem;
-    border-radius: 0 0 1rem 1rem;
+.profile table,
+.user-detail table {
+    margin: 0 auto 5rem;
+}
+
+.reset-pwd h3 {
+    width: 95%;
+    margin: 2rem auto 0;
     padding: 0.5rem;
-    color: #f0ffff;
-    background-color: #202020af;
-}
-
-#profile section table tr th,
-#user-detail section table tr th {
-    padding: 1rem 0;
     text-align: center;
+    text-transform: uppercase;
 }
 
-#profile section table tr td,
-#user-detail section table tr td {
-    padding: 1rem 0.1rem;
-    text-align: left;
+.reset-pwd form {
+    width: 95%;
+    margin: 0 auto 5rem;
+    padding: 0.5rem;
 }
 
-/* For the 3rd column center and cancel the previous state */
-#profile section table tr td:nth-child(3),
-#user-detail section table tr td:nth-child(3) {
-    text-align: center;
-}
-
-#user-detail section table tbody tr td:nth-child(2) {
-    max-width: 10rem;
-    overflow: hidden;
-}
-
-#user-detail section table tbody tr td:nth-child(2):hover {
-    overflow: visible;
-    overflow-wrap: break-word;
-}
-
-#profile section table tr td input,
-#user-detail section table tr td input {
-    width: 100%;
-    text-align: left;
-}
-
-/* ADMIN SECTION */
-
-#panel section h3,
-.reset-pwd section h3 {
+.user-list h3,
+.category-list h3,
+.bookmark-list h3,
+.add-bookmark h3,
+.add-category h3,
+.add-user h3 {
     width: 30rem;
     margin: 2rem auto 0;
     padding: 0.5rem;
-    border-radius: 1rem 1rem 0 0;
-    background-color: #202020af;
-    color: #f0ffff;
     text-align: center;
     text-transform: uppercase;
 }
 
-#panel section table,
-#panel section form,
-.reset-pwd section form {
+.user-list table,
+.category-list table,
+.bookmark-list table,
+.add-bookmark form,
+.add-category form,
+.add-user form {
     width: 30rem;
     margin: 0 auto 5rem;
-    padding: 1rem;
-    border-radius: 0 0 1rem 1rem;
-    color: #f0ffff;
-    background-color: #202020af;
-}
-
-/* SPE USERLIST */
-
-#panel #user-list article table tr th {
-    text-align: center;
-}
-#panel #user-list article table thead tr th:first-child {
-    width: 2rem;
-}
-
-#panel #user-list article table thead tr th:nth-child(2) {
-    max-width: 18rem;
-}
-
-#panel #user-list article table thead tr th:nth-child(3) {
-    display: none;
-}
-
-#panel #user-list article table thead tr th:nth-child(3),
-#panel #user-list article table thead tr th:nth-child(4),
-#panel #user-list article table tbody tr td:nth-child(5) {
-    width: 4rem;
-}
-
-#panel #user-list article table tbody tr td {
-    text-align: left;
-}
-
-#panel #user-list article table tbody tr td:first-child {
-    width: 2rem;
-}
-
-#panel #user-list article table tbody tr td:nth-child(2) {
-    max-width: 18rem;
-    overflow: hidden;
-}
-
-#panel #user-list article table tbody tr td:nth-child(2):hover {
-    overflow: visible;
-    overflow-wrap: break-word;
-}
-
-#panel #user-list article table tbody tr td:nth-child(3) {
-    display: none;
-}
-
-#panel #user-list article table tbody tr td:nth-child(3),
-#panel #user-list article table tbody tr td:nth-child(4),
-#panel #user-list article table tbody tr td:nth-child(5) {
-    width: 4rem;
-}
-
-#panel section table {
     padding: 0.5rem;
 }
 
-/* SPE ADD USER & RESET PWD */
-
-#panel section form,
-.reset-pwd section form {
-    padding: 1rem;
+.user-detail table tbody tr td {
+    max-width: 15rem;
 }
 
-#panel section form input,
-.reset-pwd section form input {
-    width: 100%;
-    margin: 1rem 0;
+.user-list table tbody tr td:first-child {
+    text-align: center;
+    max-width: 1rem;
 }
+
+.user-list table tbody tr td:nth-child(2) {
+    max-width: 12rem;
+}
+
+.user-list table tbody tr td:nth-child(3) {
+    max-width: 6rem;
+}
+
+.user-list table tbody tr td:nth-child(4),
+.user-list table tbody tr td:nth-child(5) {
+    text-align: center;
+    max-width: 4rem;
+}
+
+.category-list table tbody tr td:first-child,
+.category-list table thead tr th:first-child {
+    text-align: center;
+    max-width: 1rem;
+}
+
+.category-list table tbody tr td:nth-child(2),
+.category-list table thead tr th:nth-child(2) {
+    max-width: 12rem;
+}
+
+.category-list table thead tr th:nth-child(3) {
+    max-width: 8rem;
+}
+.category-list table tbody tr td:nth-child(3),
+.category-list table tbody tr td:nth-child(4) {
+    text-align: center;
+    max-width: 2rem;
+}
+
+.bookmark-list table thead tr th:first-child,
+.bookmark-list table tbody tr td:first-child {
+    max-width: 2rem;
+}
+
+.bookmark-list table tbody tr td:nth-child(2),
+.bookmark-list table tbody tr td:nth-child(3),
+.bookmark-list table thead tr th:nth-child(2),
+.bookmark-list table thead tr th:nth-child(3) {
+    max-width: 5rem;
+}
+.bookmark-list table tbody tr td:nth-child(4),
+.bookmark-list table thead tr th:nth-child(4) {
+    max-width: 5rem;
+}
+.bookmark-list table tbody tr td:nth-child(5),
+.bookmark-list table thead tr th:nth-child(5) {
+    max-width: 5rem;
+}
+.bookmark-list table tbody tr td:nth-child(6),
+.bookmark-list table tbody tr td:nth-child(7),
+.bookmark-list table thead tr th:nth-child(6) {
+    text-align: center;
+    max-width: 4rem;
+}
+
+/***************************************************************/
 
 /*SEARCH BAR -- CATEGORY BAR */
 
@@ -571,13 +618,18 @@ footer > p {
     /********************************************************/
     /* HEADER */
 
+    body {
+        font-size: 1.6rem;
+    }
+
     header h1 {
         padding: 1rem 0.5rem;
     }
 
     .menu-display {
         top: 6rem;
-        width: 25%;
+        width: 30%;
+        text-align: left;
     }
 
     /********************************************************/
@@ -587,51 +639,131 @@ footer > p {
         margin: 0 0 5rem 0;
     }
 
-    #profile,
-    #user-detail {
-        margin: 5rem auto;
+    .profile h3,
+    .profile table,
+    .user-detail h3,
+    .user-detail table {
+        width: 60%;
     }
 
-    #profile section h3,
-    #user-detail section h3 {
+    .profile table tbody tr td {
+        padding: 1rem 0.5rem;
+    }
+
+    .reset-pwd h3,
+    .profile table tbody tr td:nth-child(2),
+    .profile table tbody tr td:nth-child(3) {
+        text-align: center;
+    }
+
+    .reset-pwd h3 {
+        width: 50%;
+        margin: 2rem auto 0;
+        padding: 0.5rem;
+        text-transform: uppercase;
+    }
+
+    .reset-pwd form {
+        width: 50%;
+        margin: 0 auto 5rem;
+        padding: 1.5rem;
+    }
+
+    .user-list h3,
+    .category-list h3,
+    .bookmark-list h3,
+    .add-bookmark h3,
+    .add-category h3,
+    .add-user h3 {
         width: 60rem;
         margin: 2rem auto 0;
+        padding: 0.5rem;
+        text-align: center;
+        text-transform: uppercase;
     }
 
-    #profile section table,
-    #user-detail section table {
+    .user-list table,
+    .category-list table,
+    .bookmark-list table,
+    .add-bookmark form,
+    .add-category form,
+    .add-user form {
         width: 60rem;
+        margin: 0 auto 5rem;
+        padding: 2rem;
     }
 
-    #panel {
-        margin: 5rem auto;
+    .user-detail table tbody tr td {
+        max-width: 25rem;
     }
 
-    #panel #user-list article h3 {
-        width: 60rem;
-        margin: 2rem auto 0;
+    .user-list table tbody tr td:first-child {
+        text-align: center;
+        max-width: 4rem;
     }
 
-    #panel #user-list article table {
-        width: 60rem;
+    .user-list table tbody tr td:nth-child(2) {
+        max-width: 32rem;
     }
 
-    #panel #user-list article table tbody tr td:nth-child(2) {
-        max-width: 20rem;
-        overflow: hidden;
+    .user-list table tbody tr td:nth-child(3) {
+        max-width: 12rem;
     }
 
-    #panel #user-list article table tbody tr td:nth-child(2):hover {
-        overflow: visible;
+    .user-list table tbody tr td:nth-child(4),
+    .user-list table tbody tr td:nth-child(5) {
+        text-align: center;
+        max-width: 4rem;
     }
 
-    #panel #user-list article table thead tr th:nth-child(3) {
-        display: block;
+    .category-list table tbody tr td:first-child,
+    .category-list table thead tr th:first-child {
+        text-align: center;
+        max-width: 4rem;
     }
 
-    #panel #user-list article table tbody tr td:nth-child(3) {
-        display: block;
+    .category-list table tbody tr td:nth-child(2),
+    .category-list table thead tr th:nth-child(2) {
+        max-width: 52rem;
     }
+
+    .category-list table thead tr th:nth-child(3) {
+        max-width: 8rem;
+    }
+    .category-list table tbody tr td:nth-child(3),
+    .category-list table tbody tr td:nth-child(4) {
+        max-width: 2rem;
+        text-align: center;
+    }
+
+    .bookmark-list table thead tr th:first-child,
+    .bookmark-list table tbody tr td:first-child {
+        max-width: 4rem;
+    }
+
+    .bookmark-list table tbody tr td:nth-child(2),
+    .bookmark-list table tbody tr td:nth-child(3),
+    .bookmark-list table thead tr th:nth-child(2),
+    .bookmark-list table thead tr th:nth-child(3) {
+        max-width: 16rem;
+    }
+    .bookmark-list table tbody tr td:nth-child(4),
+    .bookmark-list table thead tr th:nth-child(4) {
+        max-width: 6rem;
+    }
+    .bookmark-list table tbody tr td:nth-child(5),
+    .bookmark-list table thead tr th:nth-child(5) {
+        text-align: center;
+        max-width: 5rem;
+    }
+    .bookmark-list table tbody tr td:nth-child(6),
+    .bookmark-list table tbody tr td:nth-child(7),
+    .bookmark-list table thead tr th:nth-child(6) {
+        text-align: center;
+        max-width: 4rem;
+    }
+
+    /* SPE BOOKMARK-LIST */
 
     /********************************************************/
     /* FOOTER */
@@ -643,5 +775,190 @@ footer > p {
 
     footer > p {
         text-align: right;
+    }
+}
+
+@media screen and (min-width: 1280px) {
+    header h1 aside {
+        display: block;
+        text-transform: lowercase;
+        font-size: 1.5rem;
+        color: #202020;
+    }
+
+    header h1 aside::after {
+        content: " Ludovic LAREU";
+        text-transform: capitalize;
+    }
+
+    .menu-display {
+        top: 7rem;
+        width: 25rem;
+        text-align: left;
+    }
+
+    /* SPE LOGIN SECTION */
+
+    .entry {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #form-entry {
+        width: 50rem;
+        margin: 5rem auto;
+        padding: 1rem;
+        border-radius: 0.5rem;
+        background-color: #afbfcfc2;
+        filter: drop-shadow(0.5rem 0.5rem 1rem #27262b);
+        text-align: center;
+    }
+
+    #form-entry img {
+        width: 40%;
+        text-transform: uppercase;
+    }
+
+    fieldset {
+        width: 75%;
+        margin: 2rem auto;
+        padding: 2rem;
+    }
+
+    fieldset legend {
+        text-transform: uppercase;
+        font-weight: bold;
+    }
+
+    fieldset input {
+        width: 90%;
+        padding: 0.5rem;
+        margin: 1rem 0;
+    }
+
+    .profile h3,
+    .profile table,
+    .user-detail h3,
+    .user-detail table {
+        width: 60%;
+    }
+
+    .profile table tbody tr td {
+        padding: 1rem 0.5rem;
+    }
+
+    .reset-pwd h3,
+    .profile table tbody tr td:nth-child(3),
+    .user-detail table tbody tr td:nth-child(3) {
+        text-align: center;
+    }
+
+    .reset-pwd h3 {
+        width: 30%;
+        margin: 2rem auto 0;
+        padding: 0.5rem;
+        text-transform: uppercase;
+    }
+
+    .reset-pwd form {
+        width: 30%;
+        margin: 0 auto 5rem;
+        padding: 1.5rem;
+    }
+
+    .user-list h3,
+    .category-list h3,
+    .bookmark-list h3,
+    .add-bookmark h3,
+    .add-category h3,
+    .add-user h3 {
+        width: 90rem;
+        margin: 2rem auto 0;
+        padding: 0.5rem;
+        text-align: center;
+        text-transform: uppercase;
+    }
+
+    .user-list table,
+    .category-list table,
+    .bookmark-list table,
+    .add-bookmark form,
+    .add-category form,
+    .add-user form {
+        width: 90rem;
+        margin: 0 auto 5rem;
+        padding: 2rem;
+    }
+
+    .user-detail table tbody tr td {
+        max-width: 25rem;
+    }
+
+    .user-list table tbody tr td:first-child {
+        text-align: center;
+        max-width: 4rem;
+    }
+
+    .user-list table tbody tr td:nth-child(2) {
+        max-width: 32rem;
+    }
+
+    .user-list table tbody tr td:nth-child(3) {
+        max-width: 12rem;
+    }
+
+    .user-list table tbody tr td:nth-child(4),
+    .user-list table tbody tr td:nth-child(5) {
+        text-align: center;
+        max-width: 4rem;
+    }
+
+    .category-list table tbody tr td:first-child,
+    .category-list table thead tr th:first-child {
+        text-align: center;
+        max-width: 4rem;
+    }
+
+    .category-list table tbody tr td:nth-child(2),
+    .category-list table thead tr th:nth-child(2) {
+        max-width: 52rem;
+    }
+
+    .category-list table thead tr th:nth-child(3) {
+        max-width: 4rem;
+    }
+    .category-list table tbody tr td:nth-child(3),
+    .category-list table tbody tr td:nth-child(4) {
+        max-width: 2rem;
+        text-align: center;
+    }
+
+    .bookmark-list table thead tr th:first-child,
+    .bookmark-list table tbody tr td:first-child {
+        max-width: 4rem;
+    }
+
+    .bookmark-list table tbody tr td:nth-child(2),
+    .bookmark-list table tbody tr td:nth-child(3),
+    .bookmark-list table thead tr th:nth-child(2),
+    .bookmark-list table thead tr th:nth-child(3) {
+        max-width: 32rem;
+    }
+    .bookmark-list table tbody tr td:nth-child(4),
+    .bookmark-list table thead tr th:nth-child(4) {
+        max-width: 12rem;
+    }
+    .bookmark-list table tbody tr td:nth-child(5),
+    .bookmark-list table thead tr th:nth-child(5) {
+        text-align: center;
+        max-width: 5rem;
+    }
+    .bookmark-list table tbody tr td:nth-child(6),
+    .bookmark-list table tbody tr td:nth-child(7),
+    .bookmark-list table thead tr th:nth-child(6) {
+        text-align: center;
+        max-width: 3rem;
     }
 }
