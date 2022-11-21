@@ -86,11 +86,12 @@ export const resetPasswordUser = async (token, uuid, datas) => {
     }
 }
 
-// export const validateAccount = async (datas) => {
-//     try {
-//         return await axios.patch(`/api/v1/user/validateAccount/${datas.uuid}`, {datas});
-//     } catch (error) {
-//         return error.response
-//     }
-// }
+export const validateAccount = async (datas) => {
+    console.log(datas)
+    try {
+        return await axios.patch(`/api/v1/user/validateAccount/${datas.uuid}`, {datas});
+    } catch (error) {
+        return error.response;
+    }
+}
 

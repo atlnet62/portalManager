@@ -5,6 +5,7 @@
     box-sizing: border-box;
 }
 
+/********************************************************/
 /* GLOBAL ELEMENT */
 
 html {
@@ -12,52 +13,63 @@ html {
 }
 
 body {
-    font-size: 1.6rem;
     color: #202020;
-    background-color: #c1fdfd;
+    background: url("./assets/images/bcg.jpg") repeat;
+    font-size: 1.6rem;
+}
+
+body,
+.btn {
     font-family: "Ubuntu", Verdana, sans-serif;
-    background: url("./assets/images/bcg.webp") no-repeat;
 }
 
 a {
-    color: white;
+    color: #f0ffff;
+    text-decoration: none;
+    /*Adjust the size button and link*/
+    font-size: 1.3rem;
 }
 
+abbr {
+    text-decoration: none;
+}
+
+/********************************************************/
 /* HEADER */
 
 header {
+    width: 100%;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    width: 100%;
     padding: 0;
 }
 
 header h1 {
+    padding: 1.5rem 0.5rem;
+    color: #145439;
+    font-size: 2.5rem;
     text-align: right;
     text-transform: uppercase;
-    color: #f0ffff;
-    padding: 1.5rem 0.5rem;
-    font-size: 2.5rem;
 }
 
 .rotate {
-    animation:spin 3s linear infinite;
+    animation: spin 3s linear infinite;
 }
 
-@keyframes spin { 
-    100% { 
-        transform:rotate(360deg); 
+@keyframes spin {
+    100% {
+        transform: rotate(360deg);
     }
-} 
+}
 
 #menu-btn {
     width: 5rem;
     height: 5rem;
+    margin: 0.5rem;
     background-color: #f0ffff00;
     border: 1px solid #20202000;
     border-radius: 2.5rem;
-    margin: 0.5rem;
     font-size: 2.5rem;
 }
 
@@ -71,8 +83,8 @@ header h1 {
 
 .menu-display {
     width: 100%;
-    background-color: #202020;
     top: 6rem;
+    background-color: #202020;
     display: flex;
     flex-direction: column;
     text-align: center;
@@ -81,10 +93,10 @@ header h1 {
 }
 
 .menu-overlay {
-    background-color: #202020ee;
     width: 100%;
     height: 100vh;
     display: block;
+    background-color: #202020ee;
     position: fixed;
     z-index: 50;
 }
@@ -94,35 +106,50 @@ nav svg {
 }
 
 nav a {
+    padding: 2rem;
     color: #f0ffff;
     font-size: 2rem;
     text-decoration: none;
     text-transform: uppercase;
-    padding: 2rem;
 }
 
 nav a:hover {
-    background-color: #161616;
+    background-color: #145439;
 }
 
-/* MAIN GLOBAL */
+/********************************************************/
+/* MAIN */
+
+/* GLOBAL MAIN SECTION */
 
 h2 {
-    text-align: center;
     margin: 2rem;
+    text-align: center;
     text-transform: uppercase;
 }
 
-h3 {
-    background-color: #202020af;
-    color: #f0ffff;
-    text-align: center;
-    margin: 1.5rem;
-    text-transform: uppercase;
-    width: 60%;
-    margin: 2rem auto 0;
-    padding: 0.5rem;
-    border-radius: 1rem 1rem 0 0;
+h3::before,
+h3::after {
+    content: " - ";
+}
+
+#bookmarks,
+#profile,
+#panel {
+    display: flex;
+    flex-direction: column;
+}
+
+/* GENERAL POPUP MESSAGES */
+
+.popup {
+    width: 75%;
+    margin: auto;
+    border-radius: 1rem;
+    border: 1px solid #7e7c00;
+    background-color: #c8ff00da;
+    color: #006be6;
+    font-weight: bold;
 }
 
 .popup p {
@@ -131,21 +158,14 @@ h3 {
     text-align: center;
 }
 
-.popup {
-    background-color: #c8ff00da;
-    color: #006be6;
-    border: 1px solid #7e7c00;
-    border-radius: 1rem;
-    font-weight: bold;
-    width: 75%;
-    margin: auto;
-}
+/* POPUP FOR LOGIN FORM ONLY */
 
 .popup-log {
-    background-color: #c8ff00da;
-    color:#ff0033;
+    color: #ff0033;
     font-weight: bold;
 }
+
+/* SECTION BTN MANAGER */
 
 .btn-manager {
     margin: 2rem auto;
@@ -153,52 +173,126 @@ h3 {
 }
 
 .btn {
-    font-family: "Ubuntu", Verdana, sans-serif;
-    padding: 0.5rem 2rem;
-    margin: 0.5rem;
-    background-color: #202020af;
+    margin: 1rem;
+    padding: 1rem 2rem;
+    border: 0;
     border-radius: 1rem;
+    background-color: #202020af;
     color: #f0ffff;
     font-weight: bold;
     text-decoration: none;
+}
+
+.btn-edit,
+.btn-del,
+.btn-valid,
+.btn-link {
+    width: 3rem;
+    height: 3rem;
+    margin: 0.5rem;
+    border: 0;
+    color: #f0ffff;
+}
+
+.btn-edit,
+.btn-del,
+.btn-valid {
     border: 0;
 }
 
-.btn-del {
-    background-color: #dc143c;
+.btn-link {
+    border: 0.3rem solid #1432dc;
 }
 
-.btn-edit, .btn-link {
-    background-color: #1432dc;
+.btn-link {
+    padding: 0.6rem;
 }
 
 .btn-valid {
     background-color: #008000;
 }
 
-.btn-edit, .btn-del, .btn-valid, .btn-link {
-    margin: 0.5rem;
-    width: 3rem;
-    height: 3rem;
+.btn-edit,
+.btn-link {
+    background-color: #1432dc;
+}
+
+.btn-del {
+    background-color: #dc143c;
+}
+
+/* GENERAL FORM */
+
+.email {
+    background: url("./assets/images/user.png") no-repeat;
+}
+
+.password {
+    background: url("./assets/images/password.png") no-repeat;
+}
+
+.email,
+.password {
+    margin: 1rem 0;
+    padding: 0.5rem 2.25rem;
+    background-size: 1rem;
+    background-position: 0.5rem;
+    background-color: #f0ffff;
+    border: 0.1rem solid #27262b;
+    border-radius: 1.5rem;
+    justify-content: center;
+}
+
+input[type="submit"],
+input[type="submit"]:hover {
+    padding: 0.5rem 2.25rem;
+    border: none;
+    border-radius: 1.5rem;
+    border: 0.1rem solid #27262b;
+}
+
+input[type="submit"] {
+    background-color: #cacaca;
+}
+
+input[type="submit"]:hover {
     color: #f0ffff;
-    border: 0;
+    background-color: #145439;
 }
 
-.btn-link { 
-    padding: 0.6rem;
+/* SPE LOGIN SECTION */
+
+.entry {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
-
-
-
-/* MAIN SPEC ELEMENT  */
 
 #form-entry {
+    width: 30rem;
+    margin: 10rem auto;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    background-color: #afbfcfc2;
+    filter: drop-shadow(0.5rem 0.5rem 1rem #27262b);
     text-align: center;
 }
 
 #form-entry img {
-    width: 40%;
+    width: 30%;
     text-transform: uppercase;
+}
+
+fieldset {
+    width: 75%;
+    margin: 1rem auto;
+    padding: 1rem;
+}
+
+fieldset legend {
+    text-transform: uppercase;
+    font-weight: bold;
 }
 
 fieldset input {
@@ -207,70 +301,193 @@ fieldset input {
     margin: 0.5rem 0;
 }
 
-fieldset legend {
-    text-transform: uppercase;
-    font-weight: bold;
-}
+/* HOME & CONTACT SECTION */
 
-fieldset {
-    width: 60%;
-    margin: auto;
+#home,
+#contact {
+    width: 95%;
+    margin: 10rem auto;
     padding: 1rem;
+    border-radius: 1rem;
+    color: #f0ffff;
+    background-color: #202020af;
 }
 
-#user-list {
-    width: 80%;
+#home p,
+#contact p {
+    padding: 1rem;
+    text-align: justify;
+}
+
+.dash-bookmark-list {
+    width: 75%;
     margin: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+    max-width: 100rem;
 }
 
 .divider {
     margin: 5rem auto;
 }
 
-#bookmarks, #profile {
-    display: flex;
-    width: 100%;
-    flex-direction: column;
+/* PROFILE SECTION */
+
+#profile section h3,
+#user-detail section h3 {
+    width: 30rem;
+    margin: 4rem auto 0;
+    padding: 1rem;
+    border-radius: 1rem 1rem 0 0;
+    background-color: #202020af;
+    color: #f0ffff;
+    text-align: center;
+    text-transform: uppercase;
 }
 
-
-table {
+#profile section table,
+#user-detail section table {
+    width: 30rem;
+    margin: 0 auto 4rem;
     border-radius: 0 0 1rem 1rem;
-    margin: 0 auto 5rem auto;
-}
-
-table, #home, #contact {
-    width: 60%;
-    padding: 1.5rem;
+    padding: 0.5rem;
     color: #f0ffff;
     background-color: #202020af;
 }
 
-#home, #contact {
-    border-radius: 1rem;
-    margin: 10rem auto;
-}
-
-table tr th {
+#profile section table tr th,
+#user-detail section table tr th {
+    padding: 1rem 0;
     text-align: center;
 }
 
-table tr td {
+#profile section table tr td,
+#user-detail section table tr td {
+    padding: 1rem 0.1rem;
+    text-align: left;
+}
+
+/* For the 3rd column center and cancel the previous state */
+#profile section table tr td:nth-child(3),
+#user-detail section table tr td:nth-child(3) {
     text-align: center;
 }
 
-
-
-#bookmark-list {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    flex-wrap: wrap;
-    margin: auto;
-    width: 75%;
+#user-detail section table tbody tr td:nth-child(2) {
+    max-width: 10rem;
+    overflow: hidden;
 }
 
-#search-bar form, .category-bar {
+#user-detail section table tbody tr td:nth-child(2):hover {
+    overflow: visible;
+    overflow-wrap: break-word;
+}
+
+#profile section table tr td input,
+#user-detail section table tr td input {
+    width: 100%;
+    text-align: left;
+}
+
+/* ADMIN SECTION */
+
+#panel section h3,
+.reset-pwd section h3 {
+    width: 30rem;
+    margin: 2rem auto 0;
+    padding: 0.5rem;
+    border-radius: 1rem 1rem 0 0;
+    background-color: #202020af;
+    color: #f0ffff;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+#panel section table,
+#panel section form,
+.reset-pwd section form {
+    width: 30rem;
+    margin: 0 auto 5rem;
+    padding: 1rem;
+    border-radius: 0 0 1rem 1rem;
+    color: #f0ffff;
+    background-color: #202020af;
+}
+
+/* SPE USERLIST */
+
+#panel #user-list article table tr th {
+    text-align: center;
+}
+#panel #user-list article table thead tr th:first-child {
+    width: 2rem;
+}
+
+#panel #user-list article table thead tr th:nth-child(2) {
+    max-width: 18rem;
+}
+
+#panel #user-list article table thead tr th:nth-child(3) {
+    display: none;
+}
+
+#panel #user-list article table thead tr th:nth-child(3),
+#panel #user-list article table thead tr th:nth-child(4),
+#panel #user-list article table tbody tr td:nth-child(5) {
+    width: 4rem;
+}
+
+#panel #user-list article table tbody tr td {
+    text-align: left;
+}
+
+#panel #user-list article table tbody tr td:first-child {
+    width: 2rem;
+}
+
+#panel #user-list article table tbody tr td:nth-child(2) {
+    max-width: 18rem;
+    overflow: hidden;
+}
+
+#panel #user-list article table tbody tr td:nth-child(2):hover {
+    overflow: visible;
+    overflow-wrap: break-word;
+}
+
+#panel #user-list article table tbody tr td:nth-child(3) {
+    display: none;
+}
+
+#panel #user-list article table tbody tr td:nth-child(3),
+#panel #user-list article table tbody tr td:nth-child(4),
+#panel #user-list article table tbody tr td:nth-child(5) {
+    width: 4rem;
+}
+
+#panel section table {
+    padding: 0.5rem;
+}
+
+/* SPE ADD USER & RESET PWD */
+
+#panel section form,
+.reset-pwd section form {
+    padding: 1rem;
+}
+
+#panel section form input,
+.reset-pwd section form input {
+    width: 100%;
+    margin: 1rem 0;
+}
+
+/*SEARCH BAR -- CATEGORY BAR */
+
+#search-bar form,
+.category-bar {
     background-color: #20202075;
     border-radius: 0.5rem;
     display: flex;
@@ -280,40 +497,38 @@ table tr td {
 }
 
 #search-bar form input {
-    background: url("./assets/images/google_logo.svg")
-        no-repeat;
-    background-position: 0.5rem;
-    border: 1px solid #27262b;
-    background-color: #f0ffff;
-    border-radius: 0.5rem;
-    width: 100%;
-    margin: 0.5rem;
     padding: 0.5rem 3rem;
-    justify-content: center;
+    background: url("./assets/images/google_logo.svg") no-repeat;
 }
 
 .category-bar select {
-    background-position: 0.5rem;
-    border: 1px solid #27262b;
-    background-color: #f0ffff;
-    border-radius: 0.5rem;
+    padding: 0.5rem;
+}
+
+.category-bar select,
+#search-bar form input {
     width: 100%;
     margin: 0.5rem;
-    padding: 0.5rem;
+    border: 0.1rem solid #27262b;
+    border-radius: 0.5rem;
+    background-position: 0.5rem;
+    background-color: #f0ffff;
     justify-content: center;
 }
+
+/* CARD SECTION */
 
 .Card {
     margin: 2rem;
     background-color: #202020;
-    border: 1px solid #202020;
-    box-shadow: 0 0 5px #202020;
+    border: 0.1rem solid #202020;
+    box-shadow: 0 0 0.5rem #202020;
     text-align: center;
     transform: scale(1);
 }
 
 .Card img {
-    width: 150px;
+    width: 15rem;
     height: auto;
 }
 
@@ -333,12 +548,12 @@ table tr td {
     transform: scale(1.05);
 }
 
-
+/********************************************************/
 /* FOOTER */
 
 footer {
     width: 100%;
-    padding: 0.01rem 0;
+    padding: 1rem;
     margin: 3rem 0 0 0;
     color: #f0ffff;
     background-color: #20202075;
@@ -348,27 +563,85 @@ footer > p {
     text-align: center;
 }
 
+/********************************************************/
+/*****************   MEDIA QUERIES   ********************/
+/********************************************************/
+
 @media screen and (min-width: 768px) {
+    /********************************************************/
+    /* HEADER */
 
     header h1 {
         padding: 1rem 0.5rem;
     }
-
 
     .menu-display {
         top: 6rem;
         width: 25%;
     }
 
+    /********************************************************/
+    /* MAIN */
+
+    #bookmarks {
+        margin: 0 0 5rem 0;
+    }
+
+    #profile,
+    #user-detail {
+        margin: 5rem auto;
+    }
+
+    #profile section h3,
+    #user-detail section h3 {
+        width: 60rem;
+        margin: 2rem auto 0;
+    }
+
+    #profile section table,
+    #user-detail section table {
+        width: 60rem;
+    }
+
+    #panel {
+        margin: 5rem auto;
+    }
+
+    #panel #user-list article h3 {
+        width: 60rem;
+        margin: 2rem auto 0;
+    }
+
+    #panel #user-list article table {
+        width: 60rem;
+    }
+
+    #panel #user-list article table tbody tr td:nth-child(2) {
+        max-width: 20rem;
+        overflow: hidden;
+    }
+
+    #panel #user-list article table tbody tr td:nth-child(2):hover {
+        overflow: visible;
+    }
+
+    #panel #user-list article table thead tr th:nth-child(3) {
+        display: block;
+    }
+
+    #panel #user-list article table tbody tr td:nth-child(3) {
+        display: block;
+    }
+
+    /********************************************************/
+    /* FOOTER */
+
     footer {
-        position: fixed;
         bottom: 0;
-        background-color: #20202000;
+        position: fixed;
     }
 
     footer > p {
         text-align: right;
-        padding: 0 0.5rem;
     }
 }
-

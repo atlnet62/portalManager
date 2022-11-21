@@ -28,7 +28,7 @@ function MainPanel({ myProfile }) {
 
     useEffect(() => {
         const checkAdmin = () => {
-            if (myProfile.role_id === 3) {
+            if (myProfile && myProfile.role_id === 3) {
                 setIsAdmin(true);
             }
         };
@@ -36,7 +36,7 @@ function MainPanel({ myProfile }) {
         // eslint-disable-next-line
     }, []);
 
-    return isAdmin ? (
+    return (isAdmin || myProfile) ? (
         <main id="panel">
             <h2>ADMIN DASHBOARD</h2>
             <section className="btn-manager">

@@ -7,14 +7,13 @@ function Card({ bookmark, myProfile }) {
 
     const upCounter = async (id) => {
         try {
-            await updateCounter(TOKEN, id);
+            if (TOKEN && id) {
+                await updateCounter(TOKEN, id);
+            }
         } catch (error) {
             setMessage("We have some connection problems with the database.");
         }
     };
-
-    //console log if we have problem with the counter.
-    message && console.log(message);
 
     return (
         message ?

@@ -12,19 +12,23 @@ function ResetForm({ myProfile }) {
     const [passInfos, setPassInfos] = useState({ password: "", passwordVerified: "" });
     const [message, setMessage] = useState(null);
 
-
     const onSubmitHandler = async (e) => {
         e.preventDefault();
         const passInfosValidation = validate("reset-password", passInfos);
         if (passInfosValidation === true) {
             try {
-                const response = await resetPasswordUser(TOKEN, myProfile.uuid, passInfos);
-                if (response.data.isModified) {
-                    setMessage("The passowrd is modified ! redirect in 5 seconds ...");
+                if (TOKEN && myProfile.uuid && passInfos) {
+                    const response = await resetPasswordUser(TOKEN, myProfile.uuid, passInfos);
+                    if (response.status !== 200) {
+                        setMessage("You can't change your password.");
+                    }
+                    if (response.data.isModified) {
+                        setMessage("The passowrd is modified ! redirect in 2 seconds ...");
+                    }
+                    setTimeout(() => {
+                        navigate("/user/signout");
+                    }, "2000");
                 }
-                setTimeout(() => {
-                    navigate("/user/signout");
-                }, "5000");
             } catch (error) {
                 setMessage("We have some connection problems with the database.");
             }
@@ -38,7 +42,7 @@ function ResetForm({ myProfile }) {
     }, []);
 
     return (
-        <main id="reset-pwd">
+        <main className="reset-pwd">
             {message && (
                 <section className="popup">
                     <p>{message}</p>
@@ -46,17 +50,26 @@ function ResetForm({ myProfile }) {
             )}
 
             <section>
-                <h2>Reset Passaword</h2>
+                <h3>Reset Passaword</h3>
                 <form onSubmit={onSubmitHandler}>
-                    <input ref={password} type="password" id="password" placeholder="New password ?" onChange={(e) => setPassInfos({ ...passInfos, password: e.target.value })} />
-                    <input type="password" id="passwordVerified" placeholder="Repeat new password ?" onChange={(e) => setPassInfos({ ...passInfos, passwordVerified: e.target.value })} />
+                    <input ref={password} className="password" type="password" id="password" placeholder="New password ?" onChange={(e) => setPassInfos({ ...passInfos, password: e.target.value })} />
+
+                    <input
+                        className="password"
+                        type="password"
+                        id="passwordVerified"
+                        placeholder="Repeat new password ?"
+                        onChange={(e) => setPassInfos({ ...passInfos, passwordVerified: e.target.value })}
+                    />
                     <input type="submit" value="Send" />
                 </form>
             </section>
 
             <div className="divider"></div>
 
-            <Link to="/user/profile">Previous</Link>
+            <section className="btn-manager">
+                <Link className="btn" to="/user/profile">Previous</Link>
+            </section>
         </main>
     );
 }

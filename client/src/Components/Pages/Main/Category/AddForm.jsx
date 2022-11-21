@@ -15,15 +15,18 @@ function AddCategoryForm() {
         const categoryInfosValidation = validate("category", categoryInfos);
         if (categoryInfosValidation === true) {
             try {
-                const response = await addCategory(TOKEN, categoryInfos);
-                if (response.status !== 200) {
-                    setMessage("You can't reccord the category.");
-                }
+                if (TOKEN && categoryInfos) {
+                    setMessage("Category reccording in progress...");
+                    const response = await addCategory(TOKEN, categoryInfos);
+                    if (response.status !== 200) {
+                        setMessage("You can't reccord the category.");
+                    }
     
-                if (response.data.isCreated) {
-                    setMessage(`Category ${categoryInfos.title} is added.`);
+                    if (response.data.isCreated) {
+                        setMessage(`Category ${categoryInfos.title} is added.`);
+                    }
+                    title.current.value = "";
                 }
-                title.current.value = "";
             } catch (error) {
                 setMessage("We have some connection problems with the database.");
             }
@@ -38,11 +41,11 @@ function AddCategoryForm() {
 
     return (
         <>
-            {message &&
+            {message && (
                 <section className="popup">
                     <p>{message}</p>
                 </section>
-            }
+            )}
 
             <section className="add-category">
                 <h3>category add form</h3>

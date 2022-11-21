@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { updateUser } from "../../../services/API/user";
 import Error from "../Error";
@@ -8,7 +8,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { validate } from "../../../helpers/sanitize";
 
 function Profile({ myProfile }) {
-    // générer le numero de l'avatar
+    const TOKEN = localStorage.getItem("uat");
+    // générer le numero de l'avatar => photos fixe
     let pictures = [];
     for (let i = 0; i < 45; i++) {
         let pict = null;
@@ -22,14 +23,7 @@ function Profile({ myProfile }) {
 
     const navigate = useNavigate();
 
-    const [myInfos, setMyInfos] = useState({
-        email: myProfile.email,
-        reset_password: myProfile.reset_password,
-        alias: myProfile.alias,
-        validation_account: myProfile.validation_account,
-        avatar: myProfile.avatar,
-        role_id: myProfile.role_id,
-    });
+    const [myInfos, setMyInfos] = useState({ email: "", reset_password: 0, alias: "", validation_account: 0, avatar: "00.png", role_id: 0});
     const [edit, setEdit] = useState(false);
     const [message, setMessage] = useState(null);
 
@@ -42,22 +36,26 @@ function Profile({ myProfile }) {
         e.preventDefault();
         setMessage("");
         if (edit === true) {
-
             const myInfosValidation = validate("alias", myInfos);
             if (myInfosValidation === true) {
                 try {
-                    const newInfos = { ...myInfos };
-                    await updateUser(localStorage.getItem("uat"), myProfile.uuid, newInfos);
-                    setMessage("Profile updated ! redirect in 5 seconds ...");
-                    setTimeout(() => {
-                        navigate("/user/signout");
-                    }, "5000");
-    
-                    } catch (error) {
+                    if (myProfile.uuid && TOKEN) {
+                        const newInfos = { ...myInfos };
+                        const response = await updateUser(TOKEN, myProfile.uuid, newInfos);
+                        if (response.status !== 200) {
+                            setMessage("You can update your profile.");
+                        }
+                        if (response.status === 200) {
+                            setMessage("Profile updated ! redirect in 2 seconds ...");
+                            setTimeout(() => {
+                                navigate("/user/signout");
+                            }, "2000");
+                        }
+                    }
+                } catch (error) {
                     setMessage("We have connection problems with the database.");
                 }
-            }
-            else {
+            } else {
                 setMessage(myInfosValidation);
             }
         }
@@ -68,24 +66,43 @@ function Profile({ myProfile }) {
         e.preventDefault();
         setMessage("");
         try {
-            if (myInfos.email) {
+            if (myProfile.uuid && TOKEN) {
                 const newInfos = { ...myInfos };
-                await updateUser(localStorage.getItem("uat"), myProfile.uuid, newInfos);
-                setMessage("Profile updated ! redirect in 5 seconds ...");
-                setTimeout(() => {
-                    navigate("/user/signout");
-                }, "5000");
+                const response = await updateUser(TOKEN, myProfile.uuid, newInfos);
+                if (response.status !== 200) {
+                    setMessage("You can update your profile.");
+                }
+                if (response.status === 200) {
+                    setMessage("Profile updated ! redirect in 2 seconds ...");
+                    setTimeout(() => {
+                        navigate("/user/signout");
+                    }, "2000");
+                }
             }
         } catch (error) {
             setMessage("We have connection problems with the database.");
         }
     };
 
-    return myProfile === null ? (
-        <Error />
-    ) : (
+    useEffect(() => {
+        const chargeMyInfos = () => {
+            if (myProfile) {
+                setMyInfos({
+                    email: myProfile.email,
+                    reset_password: myProfile.reset_password,
+                    alias: myProfile.alias,
+                    validation_account: myProfile.validation_account,
+                    avatar: myProfile.avatar,
+                    role_id: myProfile.role_id,
+                });
+            }
+        };
+        chargeMyInfos();
+        // eslint-disable-next-line
+    }, []);
+
+    return myInfos && myProfile ? (
         <main id="profile">
-            
             {message && (
                 <section className="popup">
                     <p>{message}</p>
@@ -97,7 +114,9 @@ function Profile({ myProfile }) {
                 <table>
                     <thead>
                         <tr>
-                            <th colSpan="3"></th>
+                            <th>Element</th>
+                            <th>State</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -120,7 +139,7 @@ function Profile({ myProfile }) {
 
                         <tr>
                             <td>Alias :</td>
-                            <td>{!edit ? myInfos.alias : <input value={!myInfos.alias ? 'new Comer' : myInfos.alias} onChange={(e) => setMyInfos({ ...myInfos, alias: e.target.value })} />}</td>
+                            <td>{!edit ? myInfos.alias : <input value={!myInfos.alias ? "new Comer" : myInfos.alias} onChange={(e) => setMyInfos({ ...myInfos, alias: e.target.value })} />}</td>
                             <td>
                                 <Button className={!edit ? "btn-edit" : "btn-valid"} onClickHandler={(e) => ChangeAlias(e)}>
                                     {edit ? <FontAwesomeIcon icon={faCheck} /> : <FontAwesomeIcon icon={faPen} />}
@@ -136,24 +155,24 @@ function Profile({ myProfile }) {
 
                         <tr>
                             <td>Registered date :</td>
-                            <td>{myProfile.register_date ? (new Date(myProfile.register_date).toLocaleDateString()) : null}</td>
+                            <td>{myProfile.register_date ? new Date(myProfile.register_date).toLocaleDateString() : null}</td>
                         </tr>
 
                         <tr>
-                            <td>E-mail</td>
+                            <td>E-mail :</td>
                             <td>{myProfile.email}</td>
                         </tr>
 
                         <tr>
-                            <td>Account type</td>
+                            <td>Account type :</td>
                             <td>{myProfile.user_role}</td>
                         </tr>
 
                         <tr>
-                            <td>Password</td>
+                            <td>Password :</td>
                             {myProfile.reset_password !== 0 ? <td>Must be changed !</td> : <td>OK</td>}
                             <td>
-                            <Link className="btn-link" to="reset_password">
+                                <Link className="btn-link" to="reset_password">
                                     <FontAwesomeIcon icon={faArrowsRotate} />
                                 </Link>
                             </td>
@@ -162,6 +181,8 @@ function Profile({ myProfile }) {
                 </table>
             </section>
         </main>
+    ) : (
+        <Error message={"It's not possible to charge your profile"} />
     );
 }
 

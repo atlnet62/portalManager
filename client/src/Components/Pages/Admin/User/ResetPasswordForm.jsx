@@ -33,7 +33,7 @@ function ResetForm() {
     }, []);
 
     return (
-        <main id="reset-pwd">
+        <main className="reset-pwd">
             {message && (
                 <section className="popup">
                     <p>{message}</p>
@@ -43,15 +43,17 @@ function ResetForm() {
             <section>
                 <h3>Reset Passaword</h3>
                 <form onSubmit={onSubmitHandler}>
-                    <input ref={password} type="password" placeholder="New password ?" onChange={(e) => setPassInfos({ ...passInfos, password: e.target.value })} />
-                    <input type="password" placeholder="Repeat new password ?" onChange={(e) => setPassInfos({ ...passInfos, passwordVerified: e.target.value })} />
+                    <input ref={password} className="password" type="password" placeholder="New password ?" onChange={(e) => setPassInfos({ ...passInfos, password: e.target.value })} />
+                    <input className="password" type="password" placeholder="Repeat new password ?" onChange={(e) => setPassInfos({ ...passInfos, passwordVerified: e.target.value })} />
                     <input type="submit" value="Send" />
                 </form>
             </section>
 
             <div className="divider"></div>
 
-            <Link to="..">Previous</Link>
+            <section className="btn-manager">
+                <Link className="btn" to="..">Previous</Link>
+            </section>
         </main>
     );
 }

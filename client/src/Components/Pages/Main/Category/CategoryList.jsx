@@ -24,7 +24,7 @@ function CategoryList() {
         try {
             setMessage("Remove in progress...");
             const response = await removeCategory(TOKEN, id);
-            if (response.data.isRemoved) {
+            if (response.status === 200) {
                 const indexCategory = categories.map((category) => category.categoryID);
                 const newListCategories = categories;
                 newListCategories.splice(indexCategory.indexOf(id), 1);
@@ -99,13 +99,21 @@ function CategoryList() {
     useEffect(() => {
         const allCategories = async () => {
             try {
-                const categories = await allCategory(localStorage.getItem("uat"));
-                setCategories(categories.data.categoryDatas);
+                if (TOKEN) {
+                    const categories = await allCategory(TOKEN);
+                    if (categories.status !== 200) {
+                        setMessage("You can't list the categories.");
+                    }
+                    if (categories.status === 200){
+                        setCategories(categories.data.categoryDatas);
+                    }
+                }
             } catch (error) {
                 setMessage("We have some connection problems with the database.");
             }
         };
         allCategories();
+        // eslint-disable-next-line
     }, []);
 
     return (
@@ -142,7 +150,7 @@ function CategoryList() {
                                         </td>
                                         <td>
                                             <Button
-                                                className={edit ? "btn-valid" : "btn-edit"}
+                                                className={edit && editId === category.categoryID ? "btn-valid" : "btn-edit"}
                                                 onClickHandler={(e) => {
                                                     clickEdit(e, edit, category.categoryID, category.title);
                                                 }}>

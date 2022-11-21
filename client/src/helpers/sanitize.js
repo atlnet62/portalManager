@@ -8,6 +8,10 @@ export const validate = (type, datasToVerify) => {
 
         if (datasToVerify.password.match(charLogin) || datasToVerify.email.match(charLogin)) {
             return `Characters aren't allowed - Character not allowed : ><()[]{}/\\'"`;
+        } 
+        
+        if (datasToVerify.email?.trim().length < 8 || datasToVerify.password?.trim().length < 8) {
+            return "8 characters minimum";
         } else return true;
     }
 

@@ -51,10 +51,18 @@ function AddMenu({ myBookmarks }) {
             </section>
 
             <section className="btn-manager">
-                <Button className={"btn"} onClickHandler={(e) => clickSwitch(e, 0)}>Show Category List</Button>
-                <Button className={"btn"} onClickHandler={(e) => clickSwitch(e, 1)}>Show Bookmark List</Button>
-                <Button className={"btn"} onClickHandler={(e) => clickSwitch(e, 2)}>Show Category Form</Button>
-                <Button className={"btn"} onClickHandler={(e) => clickSwitch(e, 3)}>Show Bookmark Form</Button>
+                <Button className={"btn"} onClickHandler={(e) => clickSwitch(e, 0)}>
+                    Show Category List
+                </Button>
+                <Button className={"btn"} onClickHandler={(e) => clickSwitch(e, 1)}>
+                    Show Bookmark List
+                </Button>
+                <Button className={"btn"} onClickHandler={(e) => clickSwitch(e, 2)}>
+                    Show Category Form
+                </Button>
+                <Button className={"btn"} onClickHandler={(e) => clickSwitch(e, 3)}>
+                    Show Bookmark Form
+                </Button>
             </section>
 
             {categoryToggle && <CategoryList />}

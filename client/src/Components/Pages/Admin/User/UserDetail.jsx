@@ -6,6 +6,7 @@ import { allRole } from "../../../../services/API/role";
 import { faCheck, faFloppyDisk, faPen, faArrowsRotate } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { validate } from "../../../../helpers/sanitize";
+import Error from "../../Error";
 
 function Detail() {
     const TOKEN = localStorage.getItem("uat");
@@ -60,8 +61,20 @@ function Detail() {
 
     useEffect(() => {
         const getRoles = async () => {
-            const roles = await allRole(localStorage.getItem("uat"));
-            setRoles(roles.data.role_datas);
+            try {
+                if (TOKEN) {
+                    const roles = await allRole(TOKEN);
+                    if (roles.status === 200) {
+                        setRoles(roles.data.role_datas);
+                    }
+                    if (roles.status !== 200) {
+                        setMessage("We can display the role list");
+                    }
+                }
+                
+            } catch (error) {
+                
+            }
         };
         getRoles();
         // eslint-disable-next-line
@@ -70,8 +83,15 @@ function Detail() {
     useEffect(() => {
         const getUser = async () => {
             try {
-                const userInfos = await selectUser(localStorage.getItem("uat"), uuid);
-                setUserInfos(userInfos.data.userDatas);
+                if (TOKEN && uuid) {
+                    const userInfos = await selectUser(TOKEN, uuid);
+                    if (userInfos.status === 200) {
+                        setUserInfos(userInfos.data.userDatas);
+                    }
+                    if (userInfos.status !== 200) {
+                        setMessage("We can't retrieved the user detail.");
+                    }
+                }
                 
             } catch (error) {
                 setMessage("We have some connection problems with the database.");
@@ -81,7 +101,7 @@ function Detail() {
         // eslint-disable-next-line
     }, []);
     
-    return (
+    return (userInfos ?
         <main id="user-detail">
             {message && (
                 <section className="popup">
@@ -178,6 +198,7 @@ function Detail() {
                 </Link>
             </section>
         </main>
+        : <Error message={"profile user datas is empty."} />
     );
 }
 

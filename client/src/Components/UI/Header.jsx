@@ -73,8 +73,6 @@ function Header() {
                                     <FontAwesomeIcon icon={faDashboard} />
                                     Admin
                                 </Link>
-                            ) : myProfile?.role_id === 2 ? (
-                                <Link to="/moderator">Moderator</Link>
                             ) : null}
                             <Link to="/user/signout">
                                 <FontAwesomeIcon icon={faLock} />

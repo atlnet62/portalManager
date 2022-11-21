@@ -4,9 +4,8 @@ import { addBookmark } from "../../../../services/API/bookmark";
 import { allCategory } from "../../../../services/API/category";
 
 function AddBookmarkForm() {
-    const TOKEN = localStorage.getItem("uat");
-
     const title = useRef();
+    const TOKEN = localStorage.getItem("uat");
 
     const [bookmarkInfos, setBookmarkInfos] = useState({ title: "", link: "", picture: "", idCategory: 0 });
     const [categories, setCategories] = useState([]);
@@ -17,15 +16,18 @@ function AddBookmarkForm() {
         const bookmarkInfosValidation = validate("bookmark", bookmarkInfos);
         if (bookmarkInfosValidation === true) {
             try {
-                setMessage("Bookmark reccording in progress...");
-                const response = await addBookmark(TOKEN, bookmarkInfos);
-
-                if (response.status !== 200) {
-                    setMessage("You can't reccord the bookmark.");
-                }
-
-                if (response.data.isCreated) {
-                    setMessage(`${bookmarkInfos.title} bookmark's is added !`);
+                if (TOKEN && bookmarkInfos) {
+                    setMessage("Bookmark reccording in progress...");
+                    const response = await addBookmark(TOKEN, bookmarkInfos);
+                    if (response.status !== 200) {
+                        if (response.status === 400) {
+                            setMessage(response.data.errorMessage);
+                        }
+                        setMessage("You can't reccord the bookmark.");
+                    }
+                    if (response.data.isCreated) {
+                        setMessage(`${bookmarkInfos.title} bookmark's is added !`);
+                    }
                 }
             } catch (error) {
                 setMessage("We have some connection problems with the database.");
@@ -38,14 +40,14 @@ function AddBookmarkForm() {
     useEffect(() => {
         const allCategories = async () => {
             try {
-                const categories = await allCategory(localStorage.getItem("uat"));
-
-                if (categories.data.isRetrieved) {
-                    setCategories(categories.data.categoryDatas);
-                }
-
-                if (categories.status !== 200) {
-                    setMessage("You can't list the categories.");
+                if (TOKEN) {
+                    const categories = await allCategory(TOKEN);
+                    if (categories.status !== 200) {
+                        setMessage("You can't list the categories.");
+                    }
+                    if (categories.data.isRetrieved) {
+                        setCategories(categories.data.categoryDatas);
+                    }
                 }
             } catch (error) {
                 setMessage("We have some connection problems with the database.");
@@ -53,6 +55,7 @@ function AddBookmarkForm() {
         };
         allCategories();
         title.current.focus();
+        // eslint-disable-next-line
     }, []);
 
     return (
