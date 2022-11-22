@@ -4,7 +4,7 @@
 
 Ce projet a vu le jour en 2015 dans un format au language PHP/MySQL, à la suite d'une réflexion personnelle sur l'usage de plusieurs devices.
 
-L'idée de le dev en NODE/REACT s'est orienté en vue de supprimer les inconvenients liés au language PHP/Mysql sur la gestion de l'app.
+L'idée de le dev en NODE/REACT s'est orientée en vue de supprimer les inconvenients liés au language PHP/Mysql sur la gestion de l'app.
 C'est la que ce projet est devenu mon projet de fin de formation.
 
 La fonction principale est d'offrir un service d'accès aux liens préférés classés des utilisateurs sur multiples objets connectés (téléphones, tablettes, PC) sans paramètrer un navigateur en particulier sur chaque objet. La synchronisation entre differents browsers est compliquée voir impossible.
