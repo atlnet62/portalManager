@@ -7,6 +7,8 @@ import { faFloppyDisk, faCheck, faPen, faArrowsRotate } from "@fortawesome/free-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { validate } from "../../../helpers/sanitize";
 
+// profile for user
+
 function Profile({ myProfile }) {
     const TOKEN = localStorage.getItem("uat");
     // générer le numero de l'avatar => photos fixe

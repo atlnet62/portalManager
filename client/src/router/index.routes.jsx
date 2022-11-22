@@ -9,7 +9,7 @@ import Error from "../Components/Pages/Error";
 // Main Management
 //A/ Bookmark
 import MainPanel from "../Components/Pages/Main/Index";
-import AddMenu from "../Components/Pages/Main/AddMenu";
+import Container from "../Components/Pages/Main/Container";
 
 // Admin management
 import Admin from "../Components/Pages/Admin/Index";
@@ -24,6 +24,8 @@ import Profile from "../Components/Pages/User/Profile";
 import ResetPasswordFormUser from "../Components/Pages/User/ResetPasswordForm";
 import ValidateAccount from "../Components/Pages/User/ValidateAccount";
 
+// routes manager
+
 function Router() {
     return (
         <Routes>
@@ -32,7 +34,7 @@ function Router() {
             <Route index path="contact" element={<Contact />} />
 
             <Route path="main" element={<HOC child={MainPanel} isAuthRequired={true} />}>
-                <Route path="panel" element={<HOC child={AddMenu} isAuthRequired={true} />} />
+                <Route path="panel" element={<HOC child={Container} isAuthRequired={true} />} />
             </Route>
 
             <Route path="user" element={<User />}>

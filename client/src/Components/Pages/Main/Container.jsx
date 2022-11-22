@@ -6,6 +6,8 @@ import AddBookmarkForm from "./Bookmark/AddForm";
 import CategoryList from "./Category/CategoryList";
 import BookmarkList from "./Bookmark/BookmarkList";
 
+// display menu to manage bookmark / category
+
 function AddMenu({ myBookmarks }) {
     const [categoryToggle, setCategoryToggle] = useState(false);
     const [bookmarkToggle, setBookmarkToggle] = useState(true);

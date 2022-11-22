@@ -6,6 +6,8 @@ import { validate } from "../../../../helpers/sanitize";
 import { allCategory } from "../../../../services/API/category";
 import { getBookmarks, removeBookmark, updateBookmark } from "../../../../services/API/bookmark";
 
+// component to list bookmarks for an user
+
 function BookmarkList() {
     const TOKEN = localStorage.getItem("uat");
 

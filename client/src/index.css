@@ -331,7 +331,7 @@ fieldset input {
 #home,
 #contact,
 #account-validator {
-    width: 95%;
+    width: 60%;
     margin: 10rem auto;
     padding: 1rem;
     border-radius: 1rem;
@@ -344,6 +344,12 @@ fieldset input {
 #account-validator p {
     padding: 1rem;
     text-align: justify;
+}
+
+#home p em {
+    margin: 1rem 0 0;
+    text-align: right;
+    font-weight: bold;
 }
 
 .dash-bookmark-list {

@@ -2,6 +2,8 @@ import React, { useEffect, useState, useRef } from "react";
 import { validate } from "../../../../helpers/sanitize";
 import { addUser } from "../../../../services/API/user";
 
+// components add user by admin
+
 function AddUserForm() {
     const TOKEN = localStorage.getItem("uat");
 

@@ -3,6 +3,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { validateAccount } from "../../../services/API/user";
 import Button from "../../UI/Elements/Button/Index";
 
+// validation account page in link with google api to send an email confirmation
+
 function ValidateAccount() {
     const { uuid } = useParams();
 

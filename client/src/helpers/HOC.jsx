@@ -7,6 +7,8 @@ import { getBookmarks } from "../services/API/bookmark.js";
 import { signin, signout } from "../store/slices/user.slice";
 import { loadBookmarks } from "../store/slices/bookmark.slice";
 
+// HOC to manage the user property and bookmark list in link with redux store
+
 function HOC({ child, isAuthRequired }) {
     const TOKEN = localStorage.getItem("uat");
     

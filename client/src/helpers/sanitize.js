@@ -1,5 +1,7 @@
 export const validate = (type, datasToVerify) => {
 
+    // function to verify the input user with the right value (to avoid the XSS or a value unknown)
+
     const charStandard = /[><()[\]{}/'"&~#|`\\^@°=+*¨^$£µ%§,?;:!£¤-]/g;
     const charHttp = /[><()[\]{}\\'"]/g;
     const charLogin = /[><()[\]{}/\\'"]/g;

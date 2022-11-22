@@ -5,6 +5,8 @@ import { faCheck, faPen, faXmark, faArrowLeft, faArrowRight } from "@fortawesome
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { validate } from "../../../../helpers/sanitize";
 
+// component categoriy list for an user
+
 function CategoryList() {
     const TOKEN = localStorage.getItem("uat");
 
@@ -131,7 +133,7 @@ function CategoryList() {
                         <tr>
                             <th>#</th>
                             <th>Name</th>
-                            <th colSpan="2">Actions</th>
+                            <th colSpan={2}>Actions</th>
                         </tr>
                     </thead>
 

@@ -4,9 +4,16 @@ function Home() {
         <main id="home">
             <h2>WELCOME VISITOR, YOUR ARE ON PORTAL MANAGER</h2>
 
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus consectetur fugiat, molestiae eum earum id saepe recusandae harum minima esse quidem modi? Veniam sit atque, nisi repellendus aliquam sequi est laborum voluptatibus eius hic ullam consectetur facilis ipsa! Fuga accusamus odit, vero dolorum nesciunt facere autem et est animi. Quasi provident eaque assumenda rerum vitae nobis praesentium laudantium optio laboriosam rem placeat ab, maiores sit cupiditate error repellendus sequi accusantium facilis sed molestiae eveniet eligendi? A sunt repellat consectetur iste impedit quia officia, ex facilis totam dolore perspiciatis, tempora nostrum sit molestiae explicabo sequi in dolorum fugiat laudantium fugit omnis!</p>
+            <p>
+                Welcome on Portal manager, in this app you can made your homepage prefered on different browser. This app is the first version in dynamic language and with that you can appreciate a fluid navigation and application used. 
+            </p>
+            <p>
+                Please if you need more information, you can contact us on our email : <em>atlnet62[arobase]lareu.fr</em>.
+            </p>
 
-            <img src="" alt=""/>
+            <p>
+                <em>@tlnet62 - Ludovic LAREU</em>
+            </p>
         </main>
     );
 }

@@ -7,6 +7,8 @@ import { faXmark, faIdCard, faArrowLeft, faArrowRight } from "@fortawesome/free-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Error from "../../Error";
 
+// components user list for admin
+
 function UserList() {
     const TOKEN = localStorage.getItem("uat");
     const [users, setUsers] = useState([]);
@@ -101,7 +103,7 @@ function UserList() {
                                 <th>#</th>
                                 <th>email</th>
                                 <th>Role</th>
-                                <th colSpan="2">Actions</th>
+                                <th colSpan={2}>Actions</th>
                             </tr>
                         </thead>
 
@@ -152,7 +154,7 @@ function UserList() {
                                 </tr>
                             )}
                             <tr>
-                                <td colSpan="6">Total {nbUsers} users</td>
+                                <td colSpan={6}>Total {nbUsers} users</td>
                             </tr>
                         </tfoot>
                     </table>

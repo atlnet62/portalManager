@@ -3,6 +3,8 @@ import { Link, useParams } from "react-router-dom";
 import { validate } from "../../../../helpers/sanitize";
 import { resetPasswordUser } from "../../../../services/API/user";
 
+// components reset a pwd for an user by admin if necessary
+
 function ResetForm() {
     const TOKEN = localStorage.getItem("uat");
     const { uuid } = useParams();

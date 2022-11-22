@@ -5,6 +5,8 @@ import { signup, signin } from "../../../services/API/user.js";
 import logo from "./../../../assets/images/logo.svg";
 import { Link } from "react-router-dom";
 
+// register / login form
+
 function Signform({ formType }) {
     const navigate = useNavigate();
     const email = useRef();

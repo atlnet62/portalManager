@@ -8,6 +8,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { validate } from "../../../../helpers/sanitize";
 import Error from "../../Error";
 
+// components detail user for admin
+
 function Detail() {
     const TOKEN = localStorage.getItem("uat");
     const { uuid } = useParams();

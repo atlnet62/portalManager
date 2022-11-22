@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { signout } from "../../../store/slices/user.slice";
-import Cookies from "js-cookie";
 
 function SignOut() {
     const navigate = useNavigate();
@@ -10,7 +9,6 @@ function SignOut() {
 
     useEffect(() => {
         localStorage.removeItem("uat");
-        Cookies.remove("uat");
         dispatch(signout());
         navigate("/user");
         window.location.reload(false);

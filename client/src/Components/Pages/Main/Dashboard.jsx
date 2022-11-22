@@ -6,6 +6,8 @@ import { allCategory } from "../../../services/API/category";
 import Card from "./Bookmark/Card";
 import Button from "../../UI/Elements/Button/Index";
 
+// display the main page (home page for a user)
+
 function Dashboard({ myBookmarks, myProfile }) {
     const TOKEN = localStorage.getItem("uat");
 

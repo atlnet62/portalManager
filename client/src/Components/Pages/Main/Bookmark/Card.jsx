@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { updateCounter } from "../../../../services/API/bookmark";
 
+// component card for 1 bookmark for an user
+
 function Card({ bookmark, myProfile }) {
     const TOKEN = localStorage.getItem("uat");
     const [message, setMessage] = useState(null);

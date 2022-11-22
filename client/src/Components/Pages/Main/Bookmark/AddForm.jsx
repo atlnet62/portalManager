@@ -3,6 +3,8 @@ import { validate } from "../../../../helpers/sanitize";
 import { addBookmark } from "../../../../services/API/bookmark";
 import { allCategory } from "../../../../services/API/category";
 
+// component to add a bookmark for an user
+
 function AddBookmarkForm() {
     const title = useRef();
     const TOKEN = localStorage.getItem("uat");

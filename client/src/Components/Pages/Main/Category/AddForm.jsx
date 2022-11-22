@@ -2,6 +2,8 @@ import { useState, useEffect, useRef } from "react";
 import { validate } from "../../../../helpers/sanitize";
 import { addCategory } from "../../../../services/API/category";
 
+// component to add a category for an user
+
 function AddCategoryForm() {
     const TOKEN = localStorage.getItem("uat");
 

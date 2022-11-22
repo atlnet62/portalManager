@@ -4,6 +4,8 @@ import Button from "../../UI/Elements/Button/Index";
 import AddUserForm from "./User/AddForm";
 import UserList from "./User/UserList";
 
+// components main panel for admin
+
 function MainPanel({ myProfile }) {
     
     const [isAdmin, setIsAdmin] = useState(false);

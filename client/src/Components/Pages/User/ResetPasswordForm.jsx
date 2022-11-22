@@ -3,6 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { validate } from "../../../helpers/sanitize";
 import { resetPasswordUser } from "../../../services/API/user";
 
+// reset password for a user by himself
+
 function ResetForm({ myProfile }) {
     const TOKEN = localStorage.getItem("uat");
 
