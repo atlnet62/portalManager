@@ -1,5 +1,7 @@
 import pool from "../database/db.js";
 
+// Models in link with the controllers folders (MVC)
+
 class Model {
     static async getAllDatas(query) {
         const [result] = await pool.execute(query);

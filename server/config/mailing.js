@@ -18,7 +18,7 @@ export default (mailTo, subject, title, text, uuid) => {
         service: "gmail",
         auth: {
             type: "OAuth2",
-            user: "atlnet62@gmail.com",
+            user: "atlnet62@gmail.com", // user mail google account sender
             clientId: CLIENTID,
             clientSecret: CLIENTSECRET,
             refreshToken: REFRESHTOKEN,

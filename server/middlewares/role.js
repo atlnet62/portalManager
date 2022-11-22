@@ -1,3 +1,5 @@
+// Middleware to verify the role for the user to allow access on each route
+
 export const isAdmin = (request, response, next) => {
     if (request.params.role_id === 3 && request.params.validation_account === 1) {
         next();

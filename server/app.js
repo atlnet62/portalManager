@@ -7,7 +7,6 @@ import { PORT } from "./config/index.js";
 import router from "./router/index.routes.js";
 import { errorHandler } from "./errors/errHandler.js";
 
-
 const app = express();
 
 const __filename = fileURLToPath(import.meta.url);
@@ -21,7 +20,7 @@ app.use(fileUpload({ createParentPath: true }));
 app.use(router);
 app.use(errorHandler);
 
-/**********
+/********** Preparation for production
  **    app.get("*", (request, response) => {
  **        res.sendFile(path.resolve(__dirname, "../client/build", "index.html"));
  **    });

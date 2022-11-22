@@ -1,9 +1,8 @@
 import express from "express";
 import { addBookmark, allBookmark, removeBookmark, updateBookmark, updateCounter } from "../controllers/bookmark.js";
-
 import { auth } from "../middlewares/auth.js";
 import { sanitize } from "../middlewares/sanitize.js";
-import {isUser} from "../middlewares/role.js";
+import { isUser } from "../middlewares/role.js";
 
 const router = express.Router();
 

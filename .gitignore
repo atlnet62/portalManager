@@ -2,6 +2,14 @@
 
 # dependencies
 /client/node_modules
+
+# dossier issue des tests
+/server/public/datas/645ab0be-675d-4729-b68a-9d5e5e010692
+/server/public/datas/c2dbd07c-42de-4ec3-9f04-80d73d1ac436
+/server/public/datas/d8fd6b1a-3911-46cb-8338-5db5786e8a27
+/server/public/datas/d29a8207-dc59-432d-89f5-2c3b6825ad36
+/server/public/datas/e95f207b-3c99-4180-a5c1-2a438b8515fa
+/server/public/datas/f8483202-479e-480b-98f9-8cfda152ab58
 /node_modules
 /.pnp
 .pnp.js

@@ -2,6 +2,8 @@ import jwt from "jsonwebtoken";
 
 const { TOKEN_SECRET } = process.env;
 
+// verify jwt
+
 export const auth = (request, response, next) => {
     const TOKEN = request.headers["x-access-token"];
 
