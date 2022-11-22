@@ -11,31 +11,37 @@ La fonction principale est d'offrir un service d'accès aux liens préférés cl
 
 Il suffit d'enregistrer les liens préférés une seule fois et de mettre en page d'accueil "/main" sur le navigateur cible.
 
+quelques screenshots :
+cf : screenshots dans le dossier.
+
 ### STATUS DU PROJET PAR MODULE
 
 A/ Modules fonctionnels :
 
 S'inscrire et se connecter/deconnecter
 
-Possibilité de manager des utilisateurs en fonctions de differents paramètres : 
-  - ajouter un user et son dossier server
-  - supprimer un user et ses dossiers personnelles (y compris server) 
-  - modifier certains paramètres d'un user
+Possibilité de manager des utilisateurs en fonctions de differents paramètres :
 
-Gestion des bookmarks /categories par les users : 
-  - Ajouter un bm / categorie 
-  - Supprimer un bm / categorie 
-  - Modifier un bm / categorie 
-  - Attribuer ou supprimer une categorie pour un bm
+-   ajouter un user et son dossier server
+-   supprimer un user et ses dossiers personnelles (y compris server)
+-   modifier certains paramètres d'un user
+
+Gestion des bookmarks /categories par les users :
+
+-   Ajouter un bm / categorie
+-   Supprimer un bm / categorie
+-   Modifier un bm / categorie
+-   Attribuer ou supprimer une categorie pour un bm
 
 Piloter les Bm par des categories avec recherches associées (page principale : /main)
 
 B/ Evolutions possibles et envisagées pour la future version :
-  - Possiblités de personnaliser la page
-  - Personnaliser le moteur de recherches (Google par defaut) dans la barre de recherche
-  - Ajouter des modules NetAtmo API pour la meteo locale/mondiale
-  - Faire un suivi par log des actions users pour une meilleurs visualisation des actions en cas de dépannages par un admin
-  - Ajouter une messagerie interne (type messenger)
+
+-   Possiblités de personnaliser la page
+-   Personnaliser le moteur de recherches (Google par defaut) dans la barre de recherche
+-   Ajouter des modules NetAtmo API pour la meteo locale/mondiale
+-   Faire un suivi par log des actions users pour une meilleurs visualisation des actions en cas de dépannages par un admin
+-   Ajouter une messagerie interne (type messenger)
 
 ### INSTALL
 
@@ -67,8 +73,9 @@ ACCESSTOKEN = TOKEN GOOGLE API
 ```
 
 3/ dans package.json du front : (dossier client) - parametrer le proxy sur https://localhost: {Votre port de server selectionner dans .env} 9000 par defaut
-4/ Pour les test, un utilisateur déjà présent et validé : 
-- email : administrateur@admin.fr 
-- pwd : administrateur
+4/ Pour les test, un utilisateur déjà présent et validé :
+
+-   email : administrateur@admin.fr
+-   pwd : administrateur
 
 Le dossier racine est configuré pour demarrer la production prévue pour décembre 2022, je suis en train de voir pour héberger sur un server ubuntu personnalisé (paramétrés par mes soins).
