@@ -37,9 +37,6 @@ export const addCategory = async (request, response, next) => {
         });
 
     } catch (error) {
-        if (process.env.npm_lifecycle_event === "start") {
-            error = "We have some connection problems with the database.";
-        }
         return next(error);
     }
 };
@@ -67,9 +64,6 @@ export const removeCategory = async (request, response, next) => {
             isRemoved: true,
         });
     } catch (error) {
-        if (process.env.npm_lifecycle_event === "start") {
-            error = "We have some connection problems with the database.";
-        }
         return next(error);
     }
 };
@@ -100,9 +94,6 @@ export const allCategory = async (request, response, next) => {
         });
         return;
     } catch (error) {
-        if (process.env.npm_lifecycle_event === "start") {
-            error = "We have some connection problems with the database.";
-        }
         return next(error);
     }
 };
@@ -136,9 +127,6 @@ export const updateCategory = async (request, response, next) => {
         });
         
     } catch (error) {
-        if (process.env.npm_lifecycle_event === "start") {
-            error = "We have some connection problems with the database.";
-        }
         return next(error);
     }
 };
